@@ -9,7 +9,7 @@ export default function DashboardLayout() {
       <Sidebar />
 
       {/* Right Content */}
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-2">
         <Outlet />
       </main>
 

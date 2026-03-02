@@ -1,12 +1,15 @@
-import useAuthStore from "../store/useAuthStore";
+import Header from "@/components/myTrip/Header";
+import CreateTripModal from "@/components/myTrip/CreateTripModal";
+import useMyTripStore from "@/store/useMyTrip";
+
 export default function MyTrips() {
-    const clerkUser = useAuthStore((state) => state.clerkUser);
+  const isCreateTripModalOpen = useMyTripStore((state) => state.isCreateTripModalOpen);
+  const setIsCreateTripModalOpen = useMyTripStore((state) => state.setIsCreateTripModalOpen);
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">My Trips {clerkUser?.name}</h1>
-      <p className="text-gray-600">
-        Here you will see all trips you are part of.
-      </p>
+      <Header />
+      {isCreateTripModalOpen && <CreateTripModal open={isCreateTripModalOpen} onClose={() => setIsCreateTripModalOpen(false)} />}
+
     </div>
   );
 }
