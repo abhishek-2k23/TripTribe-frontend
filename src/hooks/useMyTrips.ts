@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useApi } from "../services/api";
 
  type tripData = {
@@ -21,16 +22,18 @@ const useMyTrips = () => {
     };
     const fetchTrips = async () => {
         try{
-            const response = await api.get("/trips");
+            const response = await api.get("/trips/my-trips");
+            console.log(response);
             return response.data;
         }catch(error){
             console.error("Error fetching trips:", error);
         }
     }
-
+    useEffect(() => {
+        fetchTrips();
+    }, [])
     return {
         createTrip,
-        fetchTrips
     }
 }
 
