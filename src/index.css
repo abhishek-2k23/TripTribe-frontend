@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=DM+Serif+Display&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=DM+Serif+Display&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -17,10 +17,10 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
 
@@ -43,13 +43,13 @@
 
 :root {
   --radius: 0.75rem;
-  
+
   /* White/Soft Grey Background */
   --background: oklch(0.98 0.01 230);
   --foreground: oklch(0.25 0.04 240);
 
   /* Primary = Amber (For CTAs) */
-  --primary: oklch(0.77 0.17 48); 
+  --primary: oklch(0.77 0.17 48);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary = Indigo (For Brand/Buttons) */
@@ -87,7 +87,16 @@
 }
 
 @layer base {
-  * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground font-sans; }
-  h1, h2, h3, h4 { @apply font-serif; }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+  }
 }
