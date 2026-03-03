@@ -60,11 +60,12 @@ export interface TripState {
   trips: Trip[];
   isLoading: boolean;
   error: string | null;
-  
-    isCreateTripModalOpen: boolean;
-    setIsCreateTripModalOpen: (open: boolean) => void;
-    
+  isJoinTripOpen: boolean;
+  isCreateTripModalOpen: boolean;
+
   // Actions
+  setIsCreateTripModalOpen: (open: boolean) => void;
+  setIsJoinTripOpen: (open: boolean) => void;
   setTrip: (trip: Trip[]) => void;
   setIsLoading: (v: boolean) => void;
   addTrip: (trip: Trip) => void;
