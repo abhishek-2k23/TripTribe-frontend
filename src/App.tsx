@@ -6,8 +6,9 @@ import ProtectedLayout from "./components/layout/ProtectedLayout";
 import MyTrips from "./page/MyTrip";
 import CheckLists from "./page/CheckLists";
 import Budget from "./page/Budget";
-import FilesPage from "./page/Files"; // ✅ correct import
+import FilesPage from "./page/Files"; 
 import { Toaster } from "react-hot-toast";
+import TripDetails from "./page/TripDetails";
 
 function App() {
   return (
@@ -24,7 +25,11 @@ function App() {
         {/* Protected Dashboard Layout */}
         <Route path="/home" element={<ProtectedLayout />}>
           <Route index element={<MyTrips />} />
-          <Route path="my-trips" element={<MyTrips />} />
+          <Route path="my-trips"  >
+            <Route index element ={<MyTrips />} />
+            <Route path="trip-details" element = {<TripDetails />} />
+          </Route>
+          <Route path="trip-details" element={<TripDetails />} />
           <Route path="checklists" element={<CheckLists />} />
           <Route path="budget" element={<Budget />} />
           <Route path="files" element={<FilesPage />} />

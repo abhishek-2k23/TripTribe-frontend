@@ -26,7 +26,7 @@ function Trips() {
             <div
               key={trip?._id}
               onClick={() =>
-                navigate(`/home/trip-details`, { state: { trip: trip } })
+                navigate(`/home/my-trips/trip-details`, { state: { trip: trip } })
               }
             >
               <TripCard {...trip} activityCount={0} budgetTotal={0} />{" "}

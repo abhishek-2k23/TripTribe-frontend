@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
 import { LayoutDashboard, ListChecks, Wallet, Folder, Compass } from "lucide-react";
 
@@ -10,6 +10,7 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const location = useLocation()
   return (
     <aside className="w-64 h-screen bg-foreground text-white flex flex-col justify-between p-4 ">
 
@@ -29,7 +30,7 @@ export default function Sidebar() {
                 to={item.path}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
-                    isActive
+                    isActive || (item.path === 'home/my-trips' && location.pathname === "/home")
                       ? "bg-background text-primary font-semibold"
                       : "hover:bg-white/20"
                   }`

@@ -46,6 +46,7 @@ export interface Trip {
   endDate: string;  
   inviteCode: string;
   members: TripMember[];
+  image?: {url: string}
   createdBy: {
     name: string;
     email: string;
