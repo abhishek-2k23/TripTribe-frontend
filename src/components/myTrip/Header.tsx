@@ -17,7 +17,7 @@ function Header() {
     <div className='flex justify-between items-center px-3'>
         <div className='flex gap-3 justify-center items-center'>
             <Avatar>
-                <AvatarImage  alt={clerkUser?.name?.substring(0, 2) || 'User Avatar'} />
+                <AvatarImage src={clerkUser?.image}  alt={clerkUser?.name?.substring(0, 2) || 'User Avatar'} />
                 <AvatarFallback>{clerkUser?.name?.substring(0, 2) || 'NA'}</AvatarFallback>
             </Avatar>
             <div className='flex-col gap-2 '>
@@ -26,7 +26,7 @@ function Header() {
             </div>
         </div>
 
-        <Button className='bg-[#FF7A00] p-5 py-6 rounded-full font-bold text-lg' onClick={handleCreateNewTrip} > + Create New Trip</Button>
+        <Button variant="hero" onClick={handleCreateNewTrip} > + Create New Trip</Button>
     </div>
   )
 }

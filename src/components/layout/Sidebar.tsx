@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
-import { LayoutDashboard, ListChecks, Wallet, Folder } from "lucide-react";
+import { LayoutDashboard, ListChecks, Wallet, Folder, Compass } from "lucide-react";
 
 const navItems = [
   { name: "My Trips", path: "/home/my-trips", icon: LayoutDashboard },
@@ -11,11 +11,14 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 bg-indigo-950 text-white flex flex-col justify-between p-4">
+    <aside className="w-64 h-screen bg-foreground text-white flex flex-col justify-between p-4 ">
 
       {/* TOP SECTION */}
       <div>
-        <h2 className="text-2xl font-bold mb-8">TripCollab</h2>
+        <div className="flex items-center gap-3 mb-5">
+          <Compass className="h-6 w-6 text-white" />
+          <span className="text-lg font-bold text-white">TripTribe</span>
+        </div>
 
         <nav className="flex flex-col gap-2">
           {navItems.map((item) => {
@@ -27,7 +30,7 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
                     isActive
-                      ? "bg-white text-blue-800 font-semibold"
+                      ? "bg-background text-primary font-semibold"
                       : "hover:bg-white/20"
                   }`
                 }

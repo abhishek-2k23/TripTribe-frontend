@@ -3,13 +3,15 @@ import Sidebar from "./Sidebar";
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
 
       {/* Sidebar */}
-      <Sidebar />
+      <div className="fixed left-0 top-0 h-screen w-64">
+        <Sidebar />
+      </div>
 
       {/* Right Content */}
-      <main className="flex-1 p-2">
+      <main className="ml-64 h-screen overflow-y-auto p-2">
         <Outlet />
       </main>
 

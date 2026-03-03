@@ -21,6 +21,8 @@ export default function ProtectedLayout() {
 
   useEffect(() => {
     const syncUser = async () => {
+      console.log("called sync user")
+      console.log(user);
       try {
         if (!user) return;
 
@@ -31,19 +33,15 @@ export default function ProtectedLayout() {
           name: user.fullName,
           image: user.imageUrl,
         });
-
+        console.log("getting response")
         // 2️⃣ Sync with backend
         const res = await api.post<ApiResponse<BackendUser>>(
-          "/users/sync",
-          {
-            clerkId: user.id,
-            email: user.primaryEmailAddress?.emailAddress,
-            name: user.fullName,
-            imageUrl: user.imageUrl,
-          }
+          "/users/sync"
         );
 
+        console.log(res.data);
         setBackendUser(res.data);
+        console.log("setting backet user")
 
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -62,6 +60,7 @@ export default function ProtectedLayout() {
   }, [user, isLoaded]);
 
   if (!isLoaded || loading) {
+    console.log(isLoaded, loading);
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Spinner />

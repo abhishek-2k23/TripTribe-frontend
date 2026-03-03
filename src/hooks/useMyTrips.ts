@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useApi } from "../services/api";
+import useMyTripStore from "@/store/useMyTrip";
 
  type tripData = {
     name: string,
@@ -10,11 +11,13 @@ import { useApi } from "../services/api";
 }
 const useMyTrips = () => {
     const api = useApi();
-
+    const {setTrip, addTrip} = useMyTripStore()
     const createTrip = async (tripData: tripData) => {
         try {
             const response = await api.post("/trips/create", tripData);
-            return response.data;
+            if(response.success){
+                addTrip(response.data);
+            }
         } catch (error) {
             console.error("Error creating trip:", error);
             throw error;
@@ -23,8 +26,7 @@ const useMyTrips = () => {
     const fetchTrips = async () => {
         try{
             const response = await api.get("/trips/my-trips");
-            console.log(response);
-            return response.data;
+            setTrip(response.data)
         }catch(error){
             console.error("Error fetching trips:", error);
         }
