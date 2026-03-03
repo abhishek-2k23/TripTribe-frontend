@@ -11,7 +11,8 @@ import useMyTripStore from "@/store/useMyTrip";
 }
 const useMyTrips = () => {
     const api = useApi();
-    const {setTrip, addTrip} = useMyTripStore()
+    const {setTrip, addTrip, setIsLoading
+    } = useMyTripStore()
     const createTrip = async (tripData: tripData) => {
         try {
             const response = await api.post("/trips/create", tripData);
@@ -24,11 +25,14 @@ const useMyTrips = () => {
         }
     };
     const fetchTrips = async () => {
+        setIsLoading(true);
         try{
             const response = await api.get("/trips/my-trips");
             setTrip(response.data)
         }catch(error){
             console.error("Error fetching trips:", error);
+        }finally{
+            setIsLoading(false);
         }
     }
     useEffect(() => {

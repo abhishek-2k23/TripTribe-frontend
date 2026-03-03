@@ -87,6 +87,8 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    
+    @apply font-serif;
   }
   body {
     @apply bg-background text-foreground font-sans;
@@ -94,7 +96,7 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4, p{
     @apply font-serif;
   }
 }

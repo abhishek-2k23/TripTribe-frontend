@@ -33,7 +33,7 @@ export default function Sidebar() {
                       ? "bg-background text-primary font-semibold"
                       : "hover:bg-white/20"
                   }`
-                }
+                }  
               >
                 <Icon size={18} />
                 {item.name}

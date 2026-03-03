@@ -9,11 +9,11 @@ import { Navigate } from "react-router-dom";
 const Index = () => {
    const { isSignedIn, isLoaded } = useUser();
 
-  // if (!isLoaded) return null;
+  if (!isLoaded) return null;
 
-  // if (isSignedIn) {
-  //   return <Navigate to="/home" replace />;
-  // }
+  if (isSignedIn) {
+    return <Navigate to="/home" replace />;
+  }
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
