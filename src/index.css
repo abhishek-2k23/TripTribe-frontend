@@ -1,12 +1,14 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
-  --font-sans: "DM Sans", ui-sans-serif, system-ui;
-  --font-serif: "DM Serif Display", serif;
+  
+  --font-Roboto: "Roboto", sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -88,15 +90,9 @@
   * {
     @apply border-border outline-ring/50;
     
-    @apply font-serif;
+    @apply font-Roboto;
   }
   body {
     @apply bg-background text-foreground font-sans;
-  }
-  h1,
-  h2,
-  h3,
-  h4, p{
-    @apply font-serif;
   }
 }

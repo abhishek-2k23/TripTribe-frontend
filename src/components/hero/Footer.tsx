@@ -1,17 +1,17 @@
-import { Compass } from "lucide-react";
+// import { Compass } from "lucide-react";
 
-const columns = [
-  { title: "Product", links: ["Features", "Integrations", "Pricing", "Changelog"] },
-  { title: "Company", links: ["About Us", "Careers", "Blog", "Press"] },
-  { title: "Support", links: ["Help Center", "Guides", "Contact", "Status"] },
-  { title: "Legal", links: ["Privacy", "Terms", "Cookies", "Licenses"] },
-];
+// const columns = [
+//   { title: "Product", links: ["Features", "Integrations", "Pricing", "Changelog"] },
+//   { title: "Company", links: ["About Us", "Careers", "Blog", "Press"] },
+//   { title: "Support", links: ["Help Center", "Guides", "Contact", "Status"] },
+//   { title: "Legal", links: ["Privacy", "Terms", "Cookies", "Licenses"] },
+// ];
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border bg-card py-16">
+    <footer className="border-t border-border bg-card pb-10">
       <div className="container mx-auto px-6">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-6">
+        {/* <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <div className="mb-4 flex items-center gap-2">
               <Compass className="h-6 w-6 text-primary" />
@@ -36,10 +36,10 @@ const Footer = () => {
               </ul>
             </div>
           ))}
-        </div>
+        </div> */}
 
-        <div className="mt-12 border-t border-border pt-8 text-center text-xs text-muted-foreground">
-          © 2026 Voyager Travel Technologies Inc. All rights reserved.
+        <div className=" border-t border-border pt-8 text-center text-xs text-muted-foreground">
+          © 2026 TripTribe. All rights reserved.
         </div>
       </div>
     </footer>
