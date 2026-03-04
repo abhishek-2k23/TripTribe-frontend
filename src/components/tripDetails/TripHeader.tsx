@@ -7,8 +7,8 @@ import useAuthStore from '@/store/useAuthStore';
 import type { Trip } from "@/types/trip.types";
 import InviteButton from "./InviteButton";
 
-export default function TripHeader({name, startDate, endDate, description, members, inviteCode, createdAt, createdBy, location, image}: Trip) {
-    console.log(name, startDate, endDate, description, members, inviteCode, createdAt, createdBy, location);
+export default function TripHeader({name, startDate, endDate, description, members, inviteCode, location, image}: Trip) {
+  
   const start = new Date(startDate);
   const end = new Date(endDate);
   const currentUser = useAuthStore(state => state.backendUser);
@@ -49,7 +49,7 @@ export default function TripHeader({name, startDate, endDate, description, membe
               </Badge>
             )}
           </div>
-
+          <p>{description}</p>
           {/* Date + Location */}
           <div className="flex items-center gap-4 text-sm text-gray-500">
 

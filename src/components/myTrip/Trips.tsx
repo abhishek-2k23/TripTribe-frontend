@@ -6,11 +6,19 @@ import traveller from '../../assets/travellers.png'
 import { Button } from "../ui/button"
 import { LucideRefreshCw} from "lucide-react"
 import useMyTrips from "@/hooks/useMyTrips"
+import useTripDetailsStore from "@/store/useTripDetails"
+import type { Trip } from "@/types/trip.types"
 function Trips() {
   const navigate = useNavigate()
   const trips = useMyTripStore((state) => state.trips)
   const isLoading = useMyTripStore((state) => state.isLoading)
   const {fetchTrips} = useMyTrips();
+  
+      const setSelectedTrip = useTripDetailsStore((state) => state.setSelectedTrip);
+      const handleNavigation = ( trip:Trip) => {
+        setSelectedTrip(trip)
+        navigate(`/home/my-trips/trip-details/${trip._id}`, { state: { trip: trip } })
+      }
   console.log(trips);
   return (
     <div className="mt-5 p-3">
@@ -23,13 +31,14 @@ function Trips() {
 
       {isLoading ? (
         <TripCardSkeleton />
-      ) : trips.length === 0 ? <div className="w-full flex flex-col justify-center items-center"><img src={traveller} alt="no trips found" className="w-fit"/><p className="text-navy font-bold text-2xl">No trips Found</p></div> : (<div className="flex flex-wrap gap-5 mt-5">
+      ) : trips.length === 0 ? <div className="w-full flex flex-col justify-center items-center"><img src={traveller} alt="no trips found" className="w-fit"/><p className="text-navy font-bold text-2xl">No trips Found</p></div> : (<div className="flex flex-wrap items-stretch gap-5 mt-5">
           {trips?.map((trip) => (
             <div
               key={trip?._id}
               onClick={() =>
-                navigate(`/home/my-trips/trip-details`, { state: { trip: trip } })
+                handleNavigation(trip)
               }
+              className="flex items-stretch"
             >
               <TripCard key={trip._id} {...trip} activityCount={0} budgetTotal={0} />{" "}
             </div>

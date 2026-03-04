@@ -27,7 +27,7 @@ function App() {
           <Route index element={<MyTrips />} />
           <Route path="my-trips"  >
             <Route index element ={<MyTrips />} />
-            <Route path="trip-details" element = {<TripDetails />} />
+            <Route path="trip-details/:tripId" element = {<TripDetails />} />
           </Route>
           <Route path="trip-details" element={<TripDetails />} />
           <Route path="checklists" element={<CheckLists />} />

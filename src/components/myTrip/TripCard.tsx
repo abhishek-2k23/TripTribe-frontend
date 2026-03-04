@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, BadgeCheck, BadgeHelp } from "lucide-react"
+import { CalendarDays, BadgeCheck, Users } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { format } from "date-fns"
 import useAuthStore from "@/store/useAuthStore"
@@ -15,6 +15,7 @@ export default function TripCard({
   members = [],
   activityCount = 0,
   budgetTotal = 0,
+  description
 }: TripCardProps) {
   const backenduser = useAuthStore((state) => state.backendUser)
   const start = new Date(startDate)
@@ -52,16 +53,18 @@ export default function TripCard({
               : "bg-navy text-secondary-foreground"
           }`}
         >
-          {isOwner ? <BadgeCheck data-icon="inline-start" /> : <BadgeHelp data-icon="inline-start" />}
+          {isOwner ? <BadgeCheck data-icon="inline-start" /> :  <Users />}
           {isOwner ? "Owner" : "Shared"}
         </Badge>
       </div>
 
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="px-4 py-2 space-y-3">
 
         <h3 className="text-lg font-semibold text-foreground">
           {name}
         </h3>
+
+        <p>{description}</p>
 
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <CalendarDays size={16} />
@@ -69,22 +72,22 @@ export default function TripCard({
           {format(end, "dd MMM yyyy")}
         </div>
 
-        <div className="flex justify-between text-sm font-medium text-foreground">
-          <div>
+        <div className="flex justify-between items-center text-sm font-medium text-foreground">
+          <div className="flex flex-col items-center ">
             <div>{days}</div>
             <div className="text-xs text-muted-foreground">
               Days
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col items-center ">
             <div>{activityCount}</div>
             <div className="text-xs text-muted-foreground">
               Activities
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col items-center ">
             <div>₹{budgetTotal}</div>
             <div className="text-xs text-muted-foreground">
               Budget
