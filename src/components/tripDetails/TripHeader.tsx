@@ -20,8 +20,7 @@ export default function TripHeader({name, startDate, endDate, description, membe
     (member) => member.user._id === currentUserId && member.role === "owner"
   )
 
-  const fallbackImage =
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e";
+  const fallbackImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e";
 
   return (
 

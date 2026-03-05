@@ -11,19 +11,17 @@ import { Calendar, ListChecks, Wallet, Folder } from "lucide-react";
 import Files from "./tabs/Files";
 import Itinerary from "./tabs/Itinerary";
 import Checklist from "./tabs/Checklist";
-import Budget from "@/page/Budget";
-import TripSummary from "./sidebar/TripSummary";
-import DiscussionPanel from "./sidebar/DiscussionPanel";
+import Budget from "./tabs/Budget";
 import useTripDetailsStore from "@/store/useTripDetails";
 
 export default function TripBodyLayout() {
   const setActiveTab = useTripDetailsStore((state) => state.setActiveTab);
   
   return (
-    <div className="grid grid-cols-12 gap-6 h-[calc(100vh-160px)] mt-10 px-2">
+    <div className="grid grid-cols-12 gap-6 h-[calc(100vh-160px)] w-full mt-10 px-2">
 
       {/* LEFT CONTENT */}
-      <div className="col-span-8 flex flex-col relative">
+      <div className="col-span-12 flex flex-col relative">
 
         <Tabs defaultValue="itinerary" className="flex flex-col h-full text-md" onValueChange={setActiveTab}>
 
@@ -90,10 +88,7 @@ export default function TripBodyLayout() {
       </div>
 
       {/* RIGHT SIDEBAR (NON SCROLLING) */}
-      <div className="col-span-4 space-y-6">
-        <TripSummary />
-        <DiscussionPanel />
-      </div>
+      
 
     </div>
   );
