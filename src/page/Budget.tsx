@@ -1,8 +1,11 @@
-import React from 'react'
+import { Button } from '@/components/ui/button'
 
 function Budget() {
   return (
-    <div>Budget</div>
+    <div>
+      
+      <Button variant={"hero"} >Budget</Button>
+    </div>
   )
 }
 

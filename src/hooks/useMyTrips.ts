@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { useApi } from "../services/api";
 import useMyTripStore from "@/store/useMyTrip";
-import toast, { ToastIcon } from "react-hot-toast";
+import toast from "react-hot-toast";
 
  type tripData = {
     name: string,
@@ -12,7 +11,7 @@ import toast, { ToastIcon } from "react-hot-toast";
 }
 const useMyTrips = () => {
     const api = useApi();
-    const {setTrip, addTrip, setIsLoading, trips
+    const {setTrip, addTrip, setIsLoading
     } = useMyTripStore()
     const createTrip = async (tripData: tripData) => {
         
@@ -60,12 +59,6 @@ const useMyTrips = () => {
             toast.error(error.message)
         }
     }
-    useEffect(() => {
-        if(trips.length === 0){
-
-            fetchTrips();
-        }
-    }, [])
     return {
         fetchTrips,
         createTrip,

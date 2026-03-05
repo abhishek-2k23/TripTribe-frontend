@@ -43,7 +43,7 @@ export default function AddExpenseModal() {
   const closeExpenseModel = useBudgetStore((state) => state.closeExpenseModel)
   const {setAmount, setTitle, setDate, setCategory, setNotes, setPaidBy, form, setSplitEqually} = useBudgetStore();
 
-  const selectedTripId = useTripDetailsStore((state) => state.selectedTrip);
+  const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
   const trips = useMyTripStore((state) => state.trips);
   const members = trips.filter((trip) => trip._id === selectedTripId)[0].members;
 
@@ -75,15 +75,48 @@ export default function AddExpenseModal() {
           <div className="text-center">
             <p className="text-sm text-muted-foreground">AMOUNT</p>
             <div className="text-4xl font-bold mt-1 text-center">
-              <Input placeholder="$0.00" className="border-none text-6xl text-center focus:outline-none" type="number" value={form.amount} onChange={(e) => setAmount(Number(e.target.value))}/>
+              <Input
+    placeholder="₹0.00"
+    type="number"
+    autoFocus
+    className="
+      /* Sizing - Forcing huge text */
+      h-auto
+      text-xl 
+      md:text-4xl
+      w-full
+      
+      border-none 
+      bg-transparent
+      text-center 
+      shadow-none
+      focus-visible:ring-0 
+      focus-visible:ring-offset-0
+      
+      placeholder:text-3xl
+      md:placeholder:text-3xl
+      placeholder:text-muted-foreground/30
+      placeholder:font-medium
+      
+      animate-pulse-slow
+      caret-primary
+      
+      [appearance:textfield] 
+      [&::-webkit-outer-spin-button]:appearance-none 
+      [&::-webkit-inner-spin-button]:appearance-none
+    "
+    value={form.amount || ""}
+    onChange={(e) => setAmount(Number(e.target.value))}
+  />
             </div>
           </div>
 
           {/* Expense Name */}
           <Input
-            placeholder="e.g. Dinner at Gion"
+            placeholder="Title"
             value={form.title}
             onChange={(e)=>setTitle(e.target.value)}
+            required
           />
 
           {/* Category + Date */}

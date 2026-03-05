@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
 interface TripDetailsState{
-    activeTab: string
-    selectedTrip : string
-    setSelectedTrip: (trip: string) => void
+    activeTab: string 
+    selectedTripId : string
+    setSelectedTripId: (trip: string) => void
     setActiveTab: (activeTab: string) => void
 }
 const useTripDetailsStore = create<TripDetailsState>((set) => ({
-    selectedTrip : "",
+    selectedTripId : "",
     activeTab : "itinerary",
-    setSelectedTrip : (v) => set({selectedTrip:v} ),
+    setSelectedTripId : (v) => set({selectedTripId:v} ),
     setActiveTab: (activeTab) => set({activeTab: activeTab}),
 }))
 

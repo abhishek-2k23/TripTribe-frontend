@@ -14,9 +14,9 @@ function Trips() {
   const isLoading = useMyTripStore((state) => state.isLoading)
   const {fetchTrips} = useMyTrips();
   
-      const setSelectedTrip = useTripDetailsStore((state) => state.setSelectedTrip);
+      const setSelectedTripId = useTripDetailsStore((state) => state.setSelectedTripId);
       const handleNavigation = ( trip:Trip) => {
-        setSelectedTrip(trip)
+        setSelectedTripId(trip._id)
         navigate(`/home/my-trips/trip-details/${trip._id}`, { state: { trip: trip } })
       }
   console.log(trips);

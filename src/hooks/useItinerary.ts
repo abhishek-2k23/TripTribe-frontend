@@ -15,11 +15,11 @@ export const useItinerary = () => {
     notes,
     closeModal,
   } = useItineraryStore()
-  const selectedTrip = useTripDetailsStore((state) => state.selectedTrip);
+  const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
   const fetchItineraries = async () => {
     try {
       
-      const res = await api.get(`/itinerary/getTripItinerary/${selectedTrip}`)
+      const res = await api.get(`/itinerary/getTripItinerary/${selectedTripId}`)
 
       if (res.success) {
         // res.data.data is the 'dayPlan' returned by our controller
@@ -34,9 +34,9 @@ export const useItinerary = () => {
 
   const createActivity = async () => {
     try{
-      console.log(selectedTrip);
+      console.log(selectedTripId);
 const formData = {
-        tripId: selectedTrip,
+        tripId: selectedTripId,
         section: sectionTitle,
         date: sectionDate,
         title,
