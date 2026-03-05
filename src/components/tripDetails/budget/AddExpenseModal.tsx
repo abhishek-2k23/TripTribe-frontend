@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import { format } from "date-fns"
 
 import {
@@ -36,30 +34,58 @@ import useBudgetStore from "@/store/useBudgetStore"
 import useTripDetailsStore from "@/store/useTripDetails"
 import useMyTripStore from "@/store/useMyTrip"
 import useBudget from "@/hooks/useBudget"
+import { useEffect } from "react"
 
 export default function AddExpenseModal() {
-  
-  const expenseModel = useBudgetStore((state) => state.expenseModel)
-  const closeExpenseModel = useBudgetStore((state) => state.closeExpenseModel)
-  const {setAmount, setTitle, setDate, setCategory, setNotes, setPaidBy, form, setSplitEqually} = useBudgetStore();
+  // 1. Use Selectors for performance
+const form = useBudgetStore((state) => state.form);
+const setParticipants = useBudgetStore((state) => state.setParticipants);
+const setSplitEqually = useBudgetStore((state) => state.setSplitEqually);
+const {setTitle, setAmount, setCategory, setNotes, setPaidBy, setDate} = useBudgetStore();
+const expenseModel = useBudgetStore((state) => state.expenseModel);
+const closeExpenseModel = useBudgetStore((state) => state.closeExpenseModel);
+const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
+const trips = useMyTripStore((state) => state.trips);
+const {addBudget} = useBudget();
 
-  const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
-  const trips = useMyTripStore((state) => state.trips);
-  const members = trips.filter((trip) => trip._id === selectedTripId)[0].members;
+const currentTrip = trips.find((t) => t._id === selectedTripId);
+const members = currentTrip?.members || [];
+const membersIds = members.map(m => m.user._id);
 
-
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([])
-
-  const {addBudget} = useBudget();
-
-  const toggleMember = (id: string) => {
-    if (selectedMembers.includes(id)) {
-      setSelectedMembers(selectedMembers.filter(m => m !== id))
-    } else {
-      setSelectedMembers([...selectedMembers, id])
+useEffect(() => {
+  if (form.splitEqually && membersIds.length > 0) {
+    // Only update if the lists are actually different to prevent loops
+    if (JSON.stringify(form.participants) !== JSON.stringify(membersIds)) {
+      setParticipants(membersIds);
     }
   }
+}, [form.splitEqually, membersIds, setParticipants]); 
 
+const toggleMember = (id: string) => {
+  let nextParticipants;
+  if (form.participants.includes(id)) {
+    nextParticipants = form.participants.filter(m => m !== id);
+  } else {
+    nextParticipants = [...form.participants, id];
+  }
+
+  setParticipants(nextParticipants);
+
+  if (nextParticipants.length !== members.length) {
+    setSplitEqually(false);
+  } else {
+    setSplitEqually(true);
+  }
+};
+
+  const expenseOptions = [
+      "Food",
+      "Transport",
+      "Activities",
+      "Shopping",
+      "Hotel",
+      "Other"
+    ]
 
   return (
     <Dialog open={expenseModel} onOpenChange={closeExpenseModel}>
@@ -128,10 +154,7 @@ export default function AddExpenseModal() {
               </SelectTrigger>
 
               <SelectContent className="bg-card">
-                <SelectItem value="Food">Food</SelectItem>
-                <SelectItem value="Transport">Transport</SelectItem>
-                <SelectItem value="Hotel">Hotel</SelectItem>
-                <SelectItem value="Shopping">Shopping</SelectItem>
+                {expenseOptions.map((expense) => <SelectItem key={expense} value={expense}>{expense}</SelectItem>)}
               </SelectContent>
             </Select>
 
@@ -194,7 +217,7 @@ export default function AddExpenseModal() {
 
               {members.map(member => {
 
-                const selected = selectedMembers.includes(member.user._id)
+                const selected = form.participants.includes(member.user._id)
 
                 return (
                   <button
