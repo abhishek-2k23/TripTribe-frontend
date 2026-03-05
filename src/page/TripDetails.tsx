@@ -7,17 +7,20 @@ import { useLocation, useParams } from 'react-router-dom'
 function TripDetails() {
     const {state} = useLocation();
    const { tripId } = useParams(); 
-  const { selectedTrip, setSelectedTrip } = useTripDetailsStore();
+  const { selectedTripId, setSelectedTripId } = useTripDetailsStore();
   useEffect(() => {
-    setSelectedTrip(tripId || "")
+    setSelectedTripId(tripId || state.trip._id)
   }, [tripId])
 
-  if (!selectedTrip) return <p>Loading trip...</p>;
+  if (!selectedTripId) return <p>Loading trip...</p>;
 
   return (
     <div>
       <TripHeader  {...state.trip}/>
-      <TripBodyLayout />
+      {
+        selectedTripId === "" ? <p>Loading trip...</p> : <TripBodyLayout />
+      }
+      
     </div>
   )
 }
