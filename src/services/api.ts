@@ -37,6 +37,8 @@ export const useApi = () => {
       request<T>("POST", url, body),
     put: <T>(url: string, body?: unknown) =>
       request<T>("PUT", url, body),
+    patch: <T>(url: string, body?: unknown) =>
+      request<T>("PATCH", url, body),
     delete: <T>(url: string) =>
       request<T>("DELETE", url),
   };

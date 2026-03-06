@@ -69,5 +69,6 @@ export interface TripState {
   setTrip: (trip: Trip[]) => void;
   setIsLoading: (v: boolean) => void;
   addTrip: (trip: Trip) => void;
+  updateTrip: (updatedTrip: Trip) => void;
   clearTrip: () => void;
 }
