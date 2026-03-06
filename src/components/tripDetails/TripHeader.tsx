@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import useAuthStore from '@/store/useAuthStore';
 import type { Trip } from "@/types/trip.types";
 import InviteButton from "./InviteButton";
+import useTripDetailsStore from "@/store/useTripDetails";
 
 export default function TripHeader({name, startDate, endDate, description, members, inviteCode, location, image}: Trip) {
   
@@ -14,6 +15,12 @@ export default function TripHeader({name, startDate, endDate, description, membe
   const currentUser = useAuthStore(state => state.backendUser);
   const displayMembers = members.slice(0, 3);
   const remainingCount = members.length > 3 ? members.length - 3 : 0;
+  
+  const backendUser = useAuthStore((state) => state.backendUser);
+  
+  const selectedTrip = useTripDetailsStore((state) => state.selectedTrip);
+
+  const member = selectedTrip?.members.filter((m) => m.user._id === backendUser?._id)[0];
 
     const  currentUserId = currentUser?._id;
     const isOwner = members.some(
@@ -42,11 +49,11 @@ export default function TripHeader({name, startDate, endDate, description, membe
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-semibold">{name}</h2>
 
-            {isOwner && (
+            
               <Badge className="bg-navy text-gray-50">
-                Owner
+                {member?.role}
               </Badge>
-            )}
+            
           </div>
           <p>{description}</p>
           {/* Date + Location */}
