@@ -1,5 +1,6 @@
 import { useApi } from "../services/api";
 import useMyTripStore from "@/store/useMyTrip";
+import useTripDetailsStore from "@/store/useTripDetails";
 import toast from "react-hot-toast";
 
  type tripData = {
@@ -13,6 +14,8 @@ const useMyTrips = () => {
     const api = useApi();
     const {setTrip, addTrip, setIsLoading
     } = useMyTripStore()
+    const selectedTripId = useTripDetailsStore((state) => state.selectedTripId)
+    const setSelectedTrip = useTripDetailsStore((state) => state.setSelectedTrip)
     const createTrip = async (tripData: tripData) => {
         
             const toastId = toast.loading("creating your trip");
@@ -42,6 +45,22 @@ const useMyTrips = () => {
             setIsLoading(false);
         }
     }
+
+    const fetchOneTrip =  async (tripId: string) => {
+        const toastId = toast.loading("loading the trip details");
+        try{
+            console.log(selectedTripId);
+            const res = await api.get(`/trips/${tripId}`);
+            if(res.success){
+                toast.success("Trip data loaded successfully", {id: toastId});
+                setSelectedTrip(res.data);
+            }
+            console.log(res);
+        }catch(e){
+            console.log(e.message);
+            toast.error(e.message, {id: toastId})
+        }
+    }
     const joinTrip = async (inviteCode: string) => {
         const toastId = toast.loading("joining the trip")
         try{
@@ -63,6 +82,7 @@ const useMyTrips = () => {
         fetchTrips,
         createTrip,
         joinTrip,
+        fetchOneTrip
     }
 }
 

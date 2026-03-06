@@ -5,7 +5,7 @@ import {
   TabsContent,
 } from "@/components/ui/tabs";
 
-import { Calendar, ListChecks, Wallet, Folder } from "lucide-react";
+import { Calendar, ListChecks, Wallet, Folder, Settings } from "lucide-react";
 
 
 import Files from "./tabs/Files";
@@ -13,9 +13,16 @@ import Itinerary from "./tabs/Itinerary";
 import Checklist from "./tabs/Checklist";
 import Budget from "./tabs/Budget";
 import useTripDetailsStore from "@/store/useTripDetails";
+import SettingsPage from "./tabs/Settings";
+import useAuthStore from "@/store/useAuthStore";
 
 export default function TripBodyLayout() {
   const setActiveTab = useTripDetailsStore((state) => state.setActiveTab);
+  const backendUser = useAuthStore((state) => state.backendUser);
+  const selectedTrip = useTripDetailsStore((state) => state.selectedTrip);
+
+  const member = selectedTrip?.members.filter((m) => m.user._id === backendUser?._id)[0];
+  console.log(selectedTrip, member);
   
   return (
     <div className="grid grid-cols-12 gap-6 h-[calc(100vh-160px)] w-full mt-10 px-2">
@@ -60,6 +67,17 @@ export default function TripBodyLayout() {
               Files
             </TabsTrigger>
 
+            {
+              member?.role === "owner" && 
+            <TabsTrigger
+              value="settings"
+              className="flex items-center gap-2 data-[state=active]:text-primary data-[state=active]:bg-primary-foreground text-lg"
+            >
+              <Settings size={16} />
+              Settings
+            </TabsTrigger>
+            }
+
           </TabsList>
 
           {/* Scrollable Content */}
@@ -79,6 +97,10 @@ export default function TripBodyLayout() {
 
             <TabsContent value="files">
               <Files />
+            </TabsContent>
+
+            <TabsContent value="settings">
+              <SettingsPage />
             </TabsContent>
 
           </div>

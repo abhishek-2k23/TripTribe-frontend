@@ -15,6 +15,11 @@ export const useMyTripStore = create<TripState>((set) => ({
   setTrip: (tripsData) => set({ trips: tripsData
   }),
   addTrip: (newTrip) => set(state => ({trips: [newTrip, ...state.trips]})),
+  updateTrip: (updatedTrip) => set((state) => ({
+    trips: state.trips.map((trip) =>
+      trip._id === updatedTrip._id ? { ...trip, ...updatedTrip } : trip
+    ),
+  })),
 
   // Clear trip (e.g., on logout or leaving the planner)
   clearTrip: () => set({ 
