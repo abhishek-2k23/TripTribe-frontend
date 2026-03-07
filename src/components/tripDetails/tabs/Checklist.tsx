@@ -20,7 +20,7 @@ export default function Checklist() {
   }, []);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 w-full">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Trip Checklists</h1>
         <Button onClick={() => setModalOpen(true)} className="bg-orange-500 hover:bg-orange-600">

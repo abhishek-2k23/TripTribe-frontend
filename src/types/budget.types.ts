@@ -1,4 +1,18 @@
 
+
+export interface BudgetCategories {
+  Food: number;
+  Transport: number;
+  Activities: number;
+  Hotel: number;
+  Shopping: number;
+  Other: number;
+}
+
+export interface BudgetForm {
+  total: number;
+  categories: BudgetCategories;
+}
 export interface ExpenseForm {
   amount: number
   title: string
@@ -8,6 +22,21 @@ export interface ExpenseForm {
   participants: string[]
   splitEqually: boolean
   notes: string
+}
+export interface DashboardCategory {
+  category: string;
+  spent: number;
+  limit: number;
+  percentage: number;
+}
+
+export interface BudgetDashboardData {
+  totalBudget: number;
+  totalSpent: number;
+  remaining: number;
+  utilization: number;
+  categories: DashboardCategory[];
+  recentExpenses: [],
 }
 
 export interface Debt {
@@ -33,7 +62,17 @@ export interface BudgetState {
   openExpenseModel: () => void
   closeExpenseModel: () => void
 
+  budgetModal: boolean;
+  openBudgetModal: () => void;
+  closeBudgetModal: () => void;
 
+  showSettleMentScreen : boolean;
+  setShowSettleMentScreen: (v: boolean) => void;
+
+   budgetForm: BudgetForm;
+   setBudgetTotal: (amount: number) => void;
+  setCategoryBudget: (category: keyof BudgetCategories, amount: number) => void;
+  resetBudgetForm: () => void
   /* ------------------------
      EXPENSE FORM
   -------------------------*/
@@ -61,6 +100,9 @@ export interface BudgetState {
   debts: Debt[]
   travelerBalances: TravelerBalance[]
 
+  dashboard: BudgetDashboardData | null;
+  setDashboardData: (data: BudgetDashboardData) => void;
+
   setBudgetData: (data: any) => void
 
 
@@ -70,7 +112,7 @@ export interface BudgetState {
 
   loading: boolean
   setLoading: (v: boolean) => void
-
+   
 
   /* ------------------------
      SETTLE PAYMENT

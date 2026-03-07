@@ -8,9 +8,39 @@ export const useTripSettings = () => {
   const api = useApi()
 
   const tripId = useTripDetailsStore((s) => s.selectedTripId)
+  const setIsUpdatingCover = useTripSettingsStore((s) => s.setIsUpdatingCover);
+  const setCoverImage = useTripSettingsStore((s) => s.setCoverImage);
+
   //   const setMyTripList = useMyTripStore((state) => state.setTrip)
 
   //   const settings = useTripSettingsStore()
+
+  const handleCoverUpload = async (file: File) => {
+    if (!file) return;
+
+    // Start loading UI
+    setIsUpdatingCover(true);
+    const toastId = toast.loading("Updating your cover image...");
+
+    try {
+      // 1. Prepare Multipart Form Data
+      const formData = new FormData();
+      formData.append("file", file); // Must match your upload.single("file") backend key
+
+      // 2. Upload to Cloudinary via your existing route
+      const res: any = await api.post("/files/upload-raw", formData);
+      
+
+      setCoverImage({ url: res.data.url, public_id: res.data.public_id });
+      toast.success("cover image uploaded", {id: toastId})
+      
+    } catch (error: any) {
+      console.error("Cover Upload Error:", error);
+      toast.error(error.message || "Failed to update cover", { id: toastId });
+    } finally {
+      setIsUpdatingCover(false);
+    }
+  };
 
   const saveSettings = async (settingsPayload: any) => {
     const toastId = toast.loading("updating trip details ")
@@ -19,6 +49,7 @@ export const useTripSettings = () => {
       const res = await api.put(`/trips/${tripId}`, settingsPayload)
       if (res.success) {
         // Update the main trips list in global state
+        console.log(res);
         useMyTripStore.getState().updateTrip(res.data);
         console.log(res)
         toast.success("Settings saved!", {id: toastId})
@@ -66,5 +97,6 @@ export const useTripSettings = () => {
     deleteTrip,
     handleDeleteMember,
     saveSettings,
+    handleCoverUpload
   }
 }

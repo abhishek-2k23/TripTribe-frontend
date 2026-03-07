@@ -1,6 +1,7 @@
 import { useApi } from "@/services/api"
 import useBudgetStore from "@/store/useBudgetStore"
 import useTripDetailsStore from "@/store/useTripDetails"
+import { useState } from "react"
 import toast from "react-hot-toast"
 
 const useBudget = () => {
@@ -10,21 +11,27 @@ const useBudget = () => {
   const closeExpenseModel = useBudgetStore((state) => state.closeExpenseModel)
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId)
   const setBudgetData = useBudgetStore((state) => state.setBudgetData)
+  const closeBudgetModal = useBudgetStore((state) => state.closeBudgetModal)
+  const resetBudgetForm = useBudgetStore((state) => state.resetBudgetForm)
+  const setDashboardData = useBudgetStore((state) => state.setDashboardData)
+  const setLoading = useBudgetStore((state) => state.setLoading)
+
+  const [isUpdating, setIsUpdating] = useState(false)
 
   let splitType: "equally" | "selected" | "none"
 
   // Determine split type
-  if(form.splitEqually){
+  if (form.splitEqually) {
     splitType = "equally"
-  }else if(form.participants.length >= 1){
+  } else if (form.participants.length >= 1) {
     splitType = "selected"
-  }else{
+  } else {
     splitType = "none"
   }
   const addBudget = async () => {
     const toastId = toast.loading("wait, adding your expense")
     try {
-      const res = await api.post("/expenses/add", {
+      const res = await api.post(`/expenses/add/${selectedTripId}`, {
         selectedTripId,
         ...form,
         splitType,
@@ -37,26 +44,22 @@ const useBudget = () => {
       }
     } catch (error) {
       console.log(error)
-    }finally{
+    } finally {
       toast.dismiss(toastId)
     }
   }
 
   const fetchBudget = async () => {
     try {
-
       const res = await api.get(`/expenses/summary/${selectedTripId}`)
-      console.log(res);
-
+      console.log(res)
     } catch (error) {
       console.error("Fetch budget error:", error)
-
     }
   }
 
   const getTravellerBalance = async () => {
     try {
-
       const res = await api.get(`/expenses/balances/${selectedTripId}`)
 
       useBudgetStore.setState({
@@ -65,44 +68,36 @@ const useBudget = () => {
       console.log("get Traveller Balance budget", res)
     } catch (error) {
       console.error("Traveller balance error:", error)
-
     }
   }
 
   const settleExpense = async (expenseId: string, userId: string) => {
     try {
-
       await api.post(`/budget/settle`, {
         expenseId,
         userId,
       })
 
       useBudgetStore.getState().settleDebt(expenseId, userId)
-
     } catch (error) {
       console.error("Settle expense error:", error)
-
     }
   }
 
   const getTripDebts = async () => {
     try {
-
       const res = await api.get(`/expenses/debts/${selectedTripId}`)
       console.log("get Trip debts", res)
-      if(res.success){
-        setBudgetData(res.data);
+      if (res.success) {
+        setBudgetData(res.data)
       }
-
     } catch (error) {
       console.error("Get debts error:", error)
-
     }
   }
 
   const getTripBudgetSummary = async () => {
     try {
-
       const res = await api.get(`/expenses/summary/${selectedTripId}`)
       console.log("getTripBudget", res)
       const data = res.data
@@ -111,12 +106,55 @@ const useBudget = () => {
         totalDebt: data.totalDebt,
         yourBalance: data.yourBalance,
       })
-
     } catch (error) {
       console.error("Budget summary error:", error)
-
     }
   }
+
+
+  const handleUpdateBudget = async (budgetForm: any) => {
+    if (!selectedTripId) return toast.error("Trip ID is missing")
+
+    setIsUpdating(true)
+    const toastId = toast.loading("Updating trip budget...")
+
+    try {
+      const response = await api.patch(`/trips/${selectedTripId}/budget`, {
+        total: budgetForm.total,
+        categories: budgetForm.categories,
+      })
+
+      if (response.success) {
+        toast.success("Budget updated successfully!", { id: toastId })
+        closeBudgetModal()
+        resetBudgetForm();
+      }
+    } catch (error: any) {
+      console.error("Budget Update Error:", error)
+      toast.error(error.message, { id: toastId })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
+  const getBudgetDetails = async () => {
+    const toastId = toast.loading("Loading budget details")
+    setLoading(true);
+    try{
+      const res = await api.get(`/expenses/budgetDashBoard/${selectedTripId}`);
+      if(res.success){
+        console.log(res);
+        setDashboardData(res.data);
+        toast.success("Budget Loaded successfully", {id: toastId});
+      }
+    }catch(e){
+      console.log(e);
+      toast.error(e.message, {id: toastId});
+    }finally{
+      setLoading(false);
+    }
+  }
+
   return {
     addBudget,
     fetchBudget,
@@ -124,6 +162,9 @@ const useBudget = () => {
     settleExpense,
     getTripBudgetSummary,
     getTripDebts,
+    isUpdating,
+    handleUpdateBudget,
+    getBudgetDetails,
   }
 }
 

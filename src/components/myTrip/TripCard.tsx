@@ -41,7 +41,7 @@ export default function TripCard({
       {/* Image */}
       <div className="relative h-44">
         <img
-          src={image?.url || dummyImage}
+          src={image?.url}
           alt={name}
           className="w-full h-full object-cover"
         />

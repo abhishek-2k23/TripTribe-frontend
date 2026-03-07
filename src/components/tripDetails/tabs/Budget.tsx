@@ -10,10 +10,14 @@ import useBudget from "@/hooks/useBudget"
 import toast from "react-hot-toast"
 import useTripDetailsStore from "@/store/useTripDetails"
 import { RefreshCwIcon } from "lucide-react"
+import DashboardLayout from "@/components/layout/DashboardLayout"
+import { SettlementSkeleton } from "@/components/shimmerUI/SettlementSkelton"
 
 export default function Budget() {
-  const openModal = useBudgetStore((s) => s.openExpenseModel)
   const setLoading = useBudgetStore((s) => s.setLoading)
+  const loading = useBudgetStore((s) => s.loading)
+  const setShowSettleMentScreen = useBudgetStore((s) => s.setShowSettleMentScreen)
+
   const { getTripDebts } = useBudget()
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
   const fetchedData = useRef(false);
@@ -39,6 +43,9 @@ export default function Budget() {
 
     }
   }, [])
+  if(loading){
+    return <SettlementSkeleton />
+  }
   return (
     <div className="px-6 space-y-6">
       {/* Header */}
@@ -54,10 +61,9 @@ export default function Budget() {
           <Button variant={"navy"} onClick={getTripDebts} className="rounded-full w-10 h-10">
             <RefreshCwIcon />
           </Button>
-          <Button variant="hero" onClick={openModal}>
-            Record Payment
+          <Button variant="hero" onClick={() => setShowSettleMentScreen(false)}>
+            Trip Analytics
           </Button>
-          <AddExpenseModal />
         </div>
       </div>
 

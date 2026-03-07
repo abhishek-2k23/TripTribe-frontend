@@ -29,7 +29,7 @@ export default function SettingsPage(){
       settings.setTripName(trip.name);
       settings.setStartDate(new Date(trip.startDate));
       settings.setEndDate(new Date(trip.endDate));
-      settings.setCoverImage(trip.image?.url || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
+      settings.setCoverImage({url: trip.image?.url || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", public_id: "public_id123"});
       settings.setTripDescription(trip.description);
       settings.setTripLocation(trip.location);
 
@@ -49,8 +49,8 @@ export default function SettingsPage(){
   const {saveSettings} = useTripSettings()
 
   const handleSave = () => {
-    const {tripName, startDate, endDate, members} = settings;
-    saveSettings({tripName, startDate, endDate, members});
+    const {tripName, startDate, endDate, members, coverImage} = settings ;
+    saveSettings({tripName, startDate, endDate, members, coverImage});
   }
   return (
 

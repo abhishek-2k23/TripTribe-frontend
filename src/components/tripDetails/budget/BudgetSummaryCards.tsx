@@ -18,7 +18,7 @@ export default function BudgetSummaryCards() {
           </p>
 
           <h2 className="text-2xl font-semibold">
-            ${totalDebt.toFixed(2)}
+            ₹{totalDebt.toFixed(2)}
           </h2>
         </div>
 
@@ -38,7 +38,7 @@ export default function BudgetSummaryCards() {
                 : "text-green-500"
             }`}
           >
-            ${yourBalance.toFixed(2)}
+            ₹{yourBalance.toFixed(2)}
           </h2>
         </div>
 

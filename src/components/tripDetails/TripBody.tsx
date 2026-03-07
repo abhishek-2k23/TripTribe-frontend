@@ -15,11 +15,14 @@ import Budget from "./tabs/Budget";
 import useTripDetailsStore from "@/store/useTripDetails";
 import SettingsPage from "./tabs/Settings";
 import useAuthStore from "@/store/useAuthStore";
+import BudgetScreen from "./budget/dashboard/BudgetDashboard";
+import useBudgetStore from "@/store/useBudgetStore";
 
 export default function TripBodyLayout() {
   const setActiveTab = useTripDetailsStore((state) => state.setActiveTab);
   const backendUser = useAuthStore((state) => state.backendUser);
   const selectedTrip = useTripDetailsStore((state) => state.selectedTrip);
+  const showSettleMentScreen = useBudgetStore((s) => s.showSettleMentScreen);
 
   const member = selectedTrip?.members.filter((m) => m.user._id === backendUser?._id)[0];
   console.log(selectedTrip, member);
@@ -92,7 +95,7 @@ export default function TripBodyLayout() {
             </TabsContent>
 
             <TabsContent value="budget">
-              <Budget />
+              {showSettleMentScreen ? <Budget /> : <BudgetScreen />}
             </TabsContent>
 
             <TabsContent value="files">

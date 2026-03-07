@@ -54,7 +54,7 @@ export default function File() {
     : files.filter(f => f.category === activeTab);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-8 w-full space-y-8">
       {/* Header Section */}
       <div className="flex justify-between items-center">
         <div>

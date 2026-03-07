@@ -44,9 +44,9 @@ export function AddChecklistModal({ isOpen, onClose, tripId }: any) {
               <SelectTrigger>
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-card">
                 {checklists.map((cat) => (
-                  <SelectItem key={cat._id} value={cat.name}>{cat.name}</SelectItem>
+                  <SelectItem key={cat._id} value={cat.name} >{cat.name}</SelectItem>
                 ))}
                 <SelectItem value="new">+ Create New Category</SelectItem>
               </SelectContent>
