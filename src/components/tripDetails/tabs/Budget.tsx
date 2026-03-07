@@ -12,6 +12,7 @@ import useTripDetailsStore from "@/store/useTripDetails"
 import { RefreshCwIcon } from "lucide-react"
 import DashboardLayout from "@/components/layout/DashboardLayout"
 import { SettlementSkeleton } from "@/components/shimmerUI/SettlementSkelton"
+import useAuthStore from "@/store/useAuthStore"
 
 export default function Budget() {
   const setLoading = useBudgetStore((s) => s.setLoading)
@@ -20,6 +21,7 @@ export default function Budget() {
 
   const { getTripDebts } = useBudget()
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId);
+  
   const fetchedData = useRef(false);
   const loadBudgetDetails = async () => {
     const toastId = toast.loading("wait, while loading your budget data")

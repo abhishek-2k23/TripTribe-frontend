@@ -72,14 +72,19 @@ const useBudget = () => {
   }
 
   const settleExpense = async (expenseId: string, userId: string) => {
+    const td = toast.loading("Wait, settling your expense");
     try {
-      await api.post(`/budget/settle`, {
+      const res = await api.post(`/expenses/settle`, {
         expenseId,
         userId,
       })
 
-      useBudgetStore.getState().settleDebt(expenseId, userId)
+      if(res.success){
+        useBudgetStore.getState().settleDebt(expenseId, userId)
+        toast.success(res.message, {id: td})
+      }
     } catch (error) {
+      toast.error(error.message, {id: td});
       console.error("Settle expense error:", error)
     }
   }

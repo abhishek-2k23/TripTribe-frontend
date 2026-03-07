@@ -1,12 +1,17 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import useBudgetStore from "@/store/useBudgetStore"
 import { Badge } from "@/components/ui/badge"
-import { ChevronRightSquare, MoveRight } from "lucide-react"
+import { MoveRight } from "lucide-react"
+import useAuthStore from "@/store/useAuthStore"
+import useBudget from "@/hooks/useBudget"
 
 export default function DebtCard({ debt }: any) {
-  const settleDebt = useBudgetStore((s) => s.settleDebt)
+  const {settleExpense} = useBudget();
+  
+    const backendUser = useAuthStore((s) => s.backendUser);
+    const paidUserId = debt.to._id;
+    const canSettle = paidUserId === backendUser?._id;
 
   return (
     <Card className="p-4 flex flex-row items-center justify-between">
@@ -30,8 +35,8 @@ export default function DebtCard({ debt }: any) {
 
       <div>
         <p className="text-sm">
-          <span className="font-semibold">{debt.from.name}</span> owes{" "}
-          <span className="font-semibold">{debt.to.name}</span>
+          <span className="font-semibold">{debt.from.email}</span> owes{" "}
+          <span className="font-semibold">{debt.to.email}</span>
         </p>
 
 
@@ -42,7 +47,8 @@ export default function DebtCard({ debt }: any) {
       <p>{debt.amount.toFixed(2)}</p>
       <Button
         variant="hero"
-        onClick={() => settleDebt(debt.expenseId, debt.from._id)}
+        disabled={!canSettle}
+        onClick={() => settleExpense(debt.expenseId, debt.from._id)}
       >
         Settle
       </Button>
