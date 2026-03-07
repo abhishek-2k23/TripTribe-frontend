@@ -1,10 +1,12 @@
 import { useFileStore } from "../store/useFileStore";
 import { useApi } from "../services/api";
 import { toast } from "react-hot-toast";
+import useTripDetailsStore from "@/store/useTripDetails";
 
-export const useFileActions = (tripId: string) => {
+export const useFileActions = () => {
   const api = useApi();
-  const { setFiles, setUploading, setDialogOpen, files, setTempFileData, tempFileData} = useFileStore();
+  const tripId = useTripDetailsStore((s) => s.selectedTripId)
+  const { setFiles, setUploading, setDialogOpen, files, setTempFileData, tempFileData, setSelectedFile, setFileName, clearFileInfo, fileInfo} = useFileStore();
 
   const handleInitialUpload = async (file: File) => {
     setUploading(true);
@@ -18,7 +20,9 @@ export const useFileActions = (tripId: string) => {
     try {
       const res = await api.post("/files/upload-raw", formData);
       // Open the detail dialog with the Cloudinary response
-      setDialogOpen(true, res.data); 
+      
+      setFileName(res.data.originalName);
+      setDialogOpen(true); 
       setTempFileData(res.data);
       toast.success("Uploaded Successfully", {id: td})
     } catch (error) {
@@ -29,7 +33,7 @@ export const useFileActions = (tripId: string) => {
     }
   };
 
-  const saveFileDetails = async (details: { name: string, category: string, notes: string }) => {
+  const saveFileDetails = async () => {
     if(!tempFileData){
       return
     }
@@ -37,18 +41,47 @@ export const useFileActions = (tripId: string) => {
       const payload = {
         tripId,
         ...tempFileData,
-        ...details
+        ...fileInfo
       };
 
       const res = await api.post("/files/finalize", payload);
-      console.log(res.data, files);
+      if(res.success){
       setFiles([res.data, ...files]);
       setDialogOpen(false);
+      setSelectedFile(null);
+      clearFileInfo();
       toast.success("File saved!");
+      }
     } catch (error) {
       toast.error("Failed to save details");
     }
   };  
 
-  return { handleInitialUpload, saveFileDetails };
+   const handlePreview = () => {
+    // Opens the Cloudinary URL in a new tab for native browser viewing
+    window.open(file.url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Fetching as a blob forces the browser to treat it as data rather than a webpage
+      const response = await fetch(file.url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = file.name; // Uses the user-defined name from your DB
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
+  return { handleInitialUpload, saveFileDetails, handlePreview, handleDownload };
 };

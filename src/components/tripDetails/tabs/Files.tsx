@@ -1,5 +1,3 @@
-import {useState } from "react";
-import { useParams } from "react-router-dom";
 import { useFileStore } from "@/store/useFileStore";
 import { useFileActions } from "@/hooks/useFile";
 import { Button } from "@/components/ui/button";
@@ -11,13 +9,14 @@ import { FileCard } from "../files/FileCard";
 const CATEGORIES = ["All", "Bookings", "Tickets", "Photos", "Guides", "TXT", "DOCUMENTS"];
 
 export default function File() {
-  const { tripId } = useParams();
   const { files, isUploading } = useFileStore();
-  const { handleInitialUpload } = useFileActions(tripId!);
-  
-  const [activeTab, setActiveTab] = useState("All");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const { handleInitialUpload } = useFileActions();
+  const setIsDragging = useFileStore((s) => s.setIsDragging);
+  const setSelectedFile = useFileStore((s) => s.setSelectedFile);
+  const selectedFile = useFileStore((s) => s.selectedFile);
+  const activeTab = useFileStore((s) => s.activeTab);
+  const isDragging = useFileStore((s) => s.isDragging);
+  const setActiveTab = useFileStore((s) => s.setActiveTab);
 
   // 1. Handle Drag Events
   const onDragOver = (e: React.DragEvent) => {
@@ -46,7 +45,7 @@ export default function File() {
   const triggerUpload = () => {
     if (selectedFile) {
       handleInitialUpload(selectedFile);
-      // We don't clear selection here; we clear it after the final save in the store/hook logic
+      
     }
   };
 
@@ -152,7 +151,7 @@ export default function File() {
       </div>
 
       {/* Detail Dialog Popup - Should clear selection when saved successfully */}
-      <FileDetailDialog tripId={tripId!} onSaveSuccess={() => setSelectedFile(null)} />
+      <FileDetailDialog  />
     </div>
   );
 }

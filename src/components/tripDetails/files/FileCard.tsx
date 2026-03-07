@@ -15,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useFileActions } from "@/hooks/useFile";
 
 const getFileIcon = (type: string = "") => {
   const t = type.toLowerCase();
@@ -30,33 +31,8 @@ const getFileIcon = (type: string = "") => {
 };
 
 export function FileCard({ file }: { file: any }) {
-  
-  const handlePreview = () => {
-    // Opens the Cloudinary URL in a new tab for native browser viewing
-    window.open(file.url, "_blank", "noopener,noreferrer");
-  };
-
-  const handleDownload = async () => {
-    try {
-      // Fetching as a blob forces the browser to treat it as data rather than a webpage
-      const response = await fetch(file.url);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = file.name; // Uses the user-defined name from your DB
-      document.body.appendChild(link);
-      link.click();
-      
-      // Cleanup
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
-  };
-
+   const {handleDownload, handlePreview} = useFileActions();
+   
   return (
     <div className="bg-white border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-64 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start">
