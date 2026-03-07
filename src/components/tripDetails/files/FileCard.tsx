@@ -32,7 +32,7 @@ const getFileIcon = (type: string = "") => {
 
 export function FileCard({ file }: { file: any }) {
    const {handleDownload, handlePreview} = useFileActions();
-   
+
   return (
     <div className="bg-white border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-64 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start">
@@ -47,11 +47,11 @@ export function FileCard({ file }: { file: any }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40 rounded-xl shadow-lg border-slate-100 bg-white">
-            <DropdownMenuItem onClick={handlePreview} className="cursor-pointer py-2">
+            <DropdownMenuItem onClick={ () => handlePreview(file?.url)} className="cursor-pointer py-2">
               <Eye className="mr-2 h-4 w-4 text-slate-500" />
               <span className="text-sm font-medium">Preview</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDownload} className="cursor-pointer py-2">
+            <DropdownMenuItem onClick={() => handleDownload(file?.url, file?.name)} className="cursor-pointer py-2">
               <Download className="mr-2 h-4 w-4 text-slate-500" />
               <span className="text-sm font-medium">Download</span>
             </DropdownMenuItem>

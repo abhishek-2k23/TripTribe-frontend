@@ -57,21 +57,21 @@ export const useFileActions = () => {
     }
   };  
 
-   const handlePreview = () => {
+   const handlePreview = (url: string) => {
     // Opens the Cloudinary URL in a new tab for native browser viewing
-    window.open(file.url, "_blank", "noopener,noreferrer");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (url: string, name: string) => {
     try {
       // Fetching as a blob forces the browser to treat it as data rather than a webpage
-      const response = await fetch(file.url);
+      const response = await fetch(url);
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
       
       const link = document.createElement("a");
       link.href = blobUrl;
-      link.download = file.name; // Uses the user-defined name from your DB
+      link.download = name || "Trip File Download"; // Uses the user-defined name from your DB
       document.body.appendChild(link);
       link.click();
       
