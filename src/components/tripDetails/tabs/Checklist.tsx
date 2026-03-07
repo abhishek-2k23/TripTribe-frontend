@@ -38,7 +38,7 @@ const progress = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
             <div key={category._id} className="bg-card border rounded-xl p-6 shadow-sm">
               <h3 className="text-xl font-semibold mb-1">{category.name}</h3>
               <p className="text-sm text-muted-foreground mb-4">{completedItems} of {category.items.length} items completed</p>
-              <Progress value={progress} className="h-2 w-[100%] mb-6" />
+              <Progress value={progress} className="h-2 mb-6" />
 
               <div className="space-y-4">
                 {category.items.map((item) => (

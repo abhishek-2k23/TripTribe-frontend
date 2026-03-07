@@ -10,15 +10,26 @@ export const useApi = () => {
   ): Promise<T> => {
     const token = await getToken();
 
+    // 1. Check if the body is FormData
+    const isFormData = body instanceof FormData;
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    // 2. ONLY set Content-Type to JSON if it's NOT FormData
+    // Browser automatically sets the correct boundary for FormData
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json";
+    }
+
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}${url}`,
       {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: body ? JSON.stringify(body) : undefined,
+        headers,
+        // 3. Do NOT stringify if it's FormData
+        body: isFormData ? (body as any) : (body ? JSON.stringify(body) : undefined),
       }
     );
 
