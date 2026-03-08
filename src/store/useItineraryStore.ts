@@ -2,7 +2,6 @@ import type { ItineraryState } from "@/types/itinerary.types"
 import { create } from "zustand"
 
 export const useItineraryStore = create<ItineraryState>((set, get) => ({
-
   isAddActivityOpen: false,
   loading: false,
   sectionTitle: "",
@@ -14,40 +13,74 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
   location: "",
   type: "",
   notes: "",
-  attachment: null,
-  activities: [], 
+  activities: [],
   timeline: [],
 
   openModal: () => set({ isAddActivityOpen: true }),
-  setLoading: (v) => set({loading: v}),
+  setLoading: (v) => set({ loading: v }),
 
   closeModal: () => {
     set({ isAddActivityOpen: false })
     get().resetForm()
   },
   setTimeline: (data) => set({ timeline: data }),
+  getSectionOptions: () => {
+    const timeline = get().timeline
+    const sections = new Set<string>()
+
+    timeline.forEach((day) => {
+      day.sections.forEach((sec) => {
+        if (sec.section) sections.add(sec.section)
+      })
+    })
+
+    return Array.from(sections)
+  },
 
   // This handles the response from our addActivity controller
   addActivityToTimeline: (updatedDay) => {
     set((state) => {
       const existingDayIndex = state.timeline.findIndex(
-        (d) => new Date(d.date).toDateString() === new Date(updatedDay.date).toDateString()
-      );
+        (d) =>
+          new Date(d.date).toDateString() ===
+          new Date(updatedDay.date).toDateString(),
+      )
 
       if (existingDayIndex > -1) {
         // Replace the existing day with the updated version from backend
-        const newTimeline = [...state.timeline];
-        newTimeline[existingDayIndex] = updatedDay;
-        return { timeline: newTimeline };
+        const newTimeline = [...state.timeline]
+        newTimeline[existingDayIndex] = updatedDay
+        return { timeline: newTimeline }
       } else {
         // Add as a new day and sort by date
-        return { 
+        return {
           timeline: [...state.timeline, updatedDay].sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-          ) 
-        };
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          ),
+        }
       }
-    });
+    })
+  },
+
+  syncDayPlan: (updatedDay) => {
+    set((state) => {
+      const existingDayIndex = state.timeline.findIndex(
+        (d) =>
+          new Date(d.date).toDateString() ===
+          new Date(updatedDay.date).toDateString(),
+      )
+
+      if (existingDayIndex > -1) {
+        const newTimeline = [...state.timeline]
+        newTimeline[existingDayIndex] = updatedDay
+        return { timeline: newTimeline }
+      }
+      return {
+        timeline: [...state.timeline, updatedDay].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
+      }
+    })
   },
 
   setSectionTitle: (v) => set({ sectionTitle: v }),
@@ -62,7 +95,7 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
   setAttachment: (v) => set({ attachment: v }),
 
   addActivity: (activities) => {
-    set({activities: activities})
+    set({ activities: activities })
     get().resetForm()
   },
 
@@ -76,7 +109,6 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
       location: "",
       type: "",
       notes: "",
-      attachment: null
-    })
-
+      attachment: null,
+    }),
 }))

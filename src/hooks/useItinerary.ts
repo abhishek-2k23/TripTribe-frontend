@@ -18,18 +18,14 @@ export const useItinerary = () => {
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId)
 
   const fetchItineraries = async () => {
-    const td = toast.loading("fetching itenaries")
     try {
       const res = await api.get(`/itinerary/getTripItinerary/${selectedTripId}`)
 
       if (res.success) {
         // res.data.data is the 'dayPlan' returned by our controller
         addActivity(res.data)
-        toast.success("Itinerary loaded", { id: td })
       }
-    } catch (e) {
-      toast.error(e.message, { id: td })
-    } finally {
+    }  finally {
       setLoading(false)
     }
   }
@@ -49,8 +45,6 @@ export const useItinerary = () => {
       }
       const res = await api.post("/itinerary/addActivity", formData)
       if (res.success) {
-        console.log(res)
-        fetchItineraries()
         closeModal()
       }
     } catch (e) {

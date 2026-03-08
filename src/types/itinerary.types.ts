@@ -18,16 +18,14 @@ export interface Activity {
   notes: string;
   attachment: string | null;
   isDone: boolean;
-  comments: ActivityComment[]; // The array you mentioned
+  comments: ActivityComment[]; 
   createdAt: string;
   updatedAt: string;
 }
-
-// Represents the nested structure returned by the backend
 export interface ItineraryDay {
   _id: string;
   trip: string;
-  date: string; // ISO String from MongoDB
+  date: string; 
   sections: {
     section: string;
     activities: Activity[];
@@ -58,7 +56,6 @@ export interface ItineraryState {
   location: string
   type: string
   notes: string
-  attachment: File | null
   loading: boolean,
 
   // data
@@ -82,7 +79,8 @@ export interface ItineraryState {
   setAttachment: (v: File | null) => void
   setTimeline: (data: ItineraryDay[]) => void;
   addActivityToTimeline: (newDay: ItineraryDay) => void;
-
+  syncDayPlan: (v: any) => void;
+  getSectionOptions: () => [];
   // actions
   addActivity: (activities: GetItineraryResponse) => void
   resetForm: () => void
