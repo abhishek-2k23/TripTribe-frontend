@@ -7,6 +7,7 @@ import useAuthStore from "@/store/useAuthStore"
 import useTripDetailsStore from "@/store/useTripDetails"
 import useMyTripStore from "@/store/useMyTrip"
 import useBudgetStore from "@/store/useBudgetStore"
+import { useDiscussionStore } from "@/store/useDiscussionStore"
 
 const useWebSocketEmmits = () => {
   const tripId = useTripDetailsStore((s) => s.selectedTripId)
@@ -19,6 +20,8 @@ const useWebSocketEmmits = () => {
   const setChecklist = useChecklistStore((s) => s.setChecklist)
   const user = useAuthStore((s) => s.backendUser)
   const addExpenseToDashboard = useBudgetStore((s) => s.addExpenseToDashboard)
+  const addMessage = useDiscussionStore((s) => s.addMessage);
+  const setTyping = useDiscussionStore((s) => s.updateTypingStatus);
 
   useEffect(() => {
     if (!tripId) return
@@ -78,6 +81,15 @@ const useWebSocketEmmits = () => {
       toast.success(`New expense: ${newExpense.title} (${newExpense.amount})`)
     })
 
+    socket.on("new_discussion_message", (message) => {
+    addMessage(message);
+    // scrollToBottom(); // Function to snap view to latest message
+  });
+
+  socket.on("user_typing", ({ userName, isTyping }) => {
+    setTyping(userName, isTyping);
+  });
+
     // 4. Cleanup: Disconnect when leaving the trip details
     return () => {
       console.log(`Leaving Trip: ${tripId}`)
@@ -96,6 +108,8 @@ const useWebSocketEmmits = () => {
     addExpenseToDashboard,
     removeActivityLocally,
     syncDayPlan,
+    setTyping,
+    addMessage,
   ])
 }
 
