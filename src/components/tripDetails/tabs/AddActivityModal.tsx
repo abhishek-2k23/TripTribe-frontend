@@ -32,6 +32,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { useItineraryStore } from "@/store/useItineraryStore";
 import { useItinerary } from "@/hooks/useItinerary";
+import { Label } from "@/components/ui/label";
 
 
 export default function AddActivityModal() {
@@ -56,11 +57,10 @@ export default function AddActivityModal() {
   const setType = useItineraryStore((state) => state.setType);
   const setTime = useItineraryStore((state) => state.setTime);
   const closeModal = useItineraryStore((state) => state.closeModal);
-  const getSectionOptions = useItineraryStore((state) => state.getSectionOptions);
+  const existingSections = useItineraryStore((state) => state.existingSections);
 
   const {createActivity} = useItinerary();
 
-  const sectionOptions = getSectionOptions();
 
   const activityTypes = [
     "Flight",
@@ -83,31 +83,45 @@ export default function AddActivityModal() {
 
         <div className="space-y-4">
           {/* SECTION TITLE / CATEGORY */}
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Section / Category</label>
-            <Select value={sectionTitle} onValueChange={setSectionTitle}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select section or create new" />
-              </SelectTrigger>
-              <SelectContent className="bg-card border shadow-md">
-                {/* Dynamically populated categories from the timeline */}
-                {sectionOptions.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
-                <SelectItem value="new" className="text-primary font-bold">+ Create New Section</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <div className="space-y-4">
+      <div className="space-y-2">
+        <Label>Select Section (Category)</Label>
+        <Select 
+          value={sectionTitle} 
+          onValueChange={(val) => {
+            setSectionTitle(val);
+            if (val !== "NEW") setCustomSection(""); // Reset custom if picking existing
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Choose a section..." />
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            {existingSections.map((sec) => (
+              <SelectItem key={sec} value={sec}>
+                {sec}
+              </SelectItem>
+            ))}
+            <SelectItem value="NEW" className="text-purple-600 font-medium">
+              + Create New Section
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          {sectionTitle === "new" && (
-            <Input
-              placeholder="Enter section title"
-              value={customSection}
-              onChange={(e) => setCustomSection(e.target.value)}
-            />
-          )}
+      {/* Show this only if user picks "Create New Section" */}
+      {sectionTitle === "NEW" && (
+        <div className="space-y-2 animate-in fade-in slide-in-from-top-1">
+          <Label>New Section Name</Label>
+          <Input 
+            placeholder="e.g., Morning Sightseeing"
+            value={customSection}
+            onChange={(e) => setCustomSection(e.target.value)}
+            className="rounded-xl"
+          />
+        </div>
+      )}
+    </div>
 
           {/* SECTION DATE */}
           <div className="space-y-1">

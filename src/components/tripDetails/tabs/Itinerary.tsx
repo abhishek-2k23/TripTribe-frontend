@@ -6,17 +6,18 @@ import { useEffect } from "react"
 import DiscussionPanel from "../sidebar/DiscussionPanel"
 import AddActivityButton from "../AddActivityButton"
 import { ItinerarySkelton } from "@/components/shimmerUI/itineraryShimmer"
+import { ItineraryTimeline } from "../itinerary/ItineraryTimeline"
 
 export default function Itinerary() {
   const { fetchItineraries } = useItinerary()
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId)
-  const activites = useItineraryStore((state) => state.activities)
+  const timeline = useItineraryStore((state) => state.timeline)
   const loading = useItineraryStore((state) => state.loading)
 
   useEffect(() => {
     fetchItineraries()
   }, [selectedTripId])
-
+ console.log(timeline);
   if (loading) {
     return <ItinerarySkelton />
   }
@@ -25,7 +26,7 @@ export default function Itinerary() {
     <div className="w-full flex justify-between space-y-4 gap-6">
       {/* Day Header */}
       <div className="w-3/4">
-        {activites.length === 0 ? (
+        {timeline.length === 0 ? (
           <div className="mx-auto w-full flex flex-col items-center justify-center">
             {" "}
             <img
@@ -40,7 +41,7 @@ export default function Itinerary() {
             </div>
           </div>
         ) : (
-          <ActivityTimeline activities={activites} />
+         <ItineraryTimeline />
         )}
       </div>
       <div className="w-1/4 space-y-6">

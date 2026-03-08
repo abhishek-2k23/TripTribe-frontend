@@ -18,10 +18,11 @@ export interface Activity {
   notes: string;
   attachment: string | null;
   isDone: boolean;
-  comments: ActivityComment[]; 
+  comments: any[]; // Matches your schema's internal discussion array
   createdAt: string;
   updatedAt: string;
 }
+
 export interface ItineraryDay {
   _id: string;
   trip: string;
@@ -31,56 +32,51 @@ export interface ItineraryDay {
     activities: Activity[];
     _id: string;
   }[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 }
 
 export interface GetItineraryResponse {
   success: boolean;
   count: number;
-  data: ItineraryDay[];
+  data: {
+    itinerary: ItineraryDay[];
+    existingSections: string[];
+  };
 }
 export interface ItineraryState {
-
-  isAddActivityOpen: boolean
-
-  sectionTitle: string
-  customSection: string
-  sectionDate: Date | null
-
+  // UI State
+  isAddActivityOpen: boolean;
+  loading: boolean;
+  
+  // The Main Data Array (Single State)
   timeline: ItineraryDay[];
+  existingSections: string[];
 
-  title: string
-  time: string
-  location: string
-  type: string
-  notes: string
-  loading: boolean,
+  // Modal Form Data
+  sectionTitle: string;
+  customSection: string;
+  sectionDate: Date | null;
+  title: string;
+  time: string;
+  location: string;
+  type: string;
+  notes: string;
 
-  // data
-  activities: Activity[]
+  // Actions
+  openModal: () => void;
+  closeModal: () => void;
+  setLoading: (v: boolean) => void;
+  addActivity: (itinerary: ItineraryDay, sections: any[]) => void;
+  
+  // Form Setters
+  setSectionTitle: (v: string) => void;
+  setCustomSection: (v: string) => void;
+  setSectionDate: (v: Date | null) => void;
+  setTitle: (v: string) => void;
+  setTime: (v: string) => void;
+  setLocation: (v: string) => void;
+  setType: (v: string) => void;
+  setNotes: (v: string) => void;
 
-  // modal actions
-  openModal: () => void
-  closeModal: () => void
-  setLoading: (v: boolean) => void
-
-  // form setters
-  setSectionTitle: (v: string) => void
-  setCustomSection: (v: string) => void
-  setSectionDate: (v: Date | null) => void
-
-  setTitle: (v: string) => void
-  setTime: (v: string) => void
-  setLocation: (v: string) => void
-  setType: (v: string) => void
-  setNotes: (v: string) => void
-  setTimeline: (data: ItineraryDay[]) => void;
-  addActivityToTimeline: (newDay: ItineraryDay) => void;
-  syncDayPlan: (v: any) => void;
-  getSectionOptions: () => string[];
-  // actions
-  addActivity: (activities: GetItineraryResponse) => void
-  resetForm: () => void
+  resetForm : () => void;
+  addLocalSection: (v: string) => void
 }

@@ -1,108 +1,30 @@
+// store/useItineraryStore.ts
 import type { ItineraryState, GetItineraryResponse } from "@/types/itinerary.types"
 import { create } from "zustand"
 
-export const useItineraryStore = create<ItineraryState>((set, get) => ({
+export const useItineraryStore = create<ItineraryState>((set) => ({
+  // --- UI & Modal State ---
   isAddActivityOpen: false,
   loading: false,
+
+  // --- Itinerary Source of Truth ---
+  timeline: [], 
+  existingSections: [],
+
+  // --- Form Data for Modal ---
   sectionTitle: "",
   customSection: "",
   sectionDate: null,
-
   title: "",
   time: "",
   location: "",
-  type: "",
+  type: "Activity",
   notes: "",
-  activities: [],
-  timeline: [],
 
+  // --- Actions ---
   openModal: () => set({ isAddActivityOpen: true }),
-  setLoading: (v) => set({ loading: v }),
-
   closeModal: () => {
     set({ isAddActivityOpen: false })
-    get().resetForm()
-  },
-  setTimeline: (data) => set({ timeline: data }),
-  getSectionOptions: () => {
-    const timeline = get().timeline
-    const sections = new Set<string>()
-
-    timeline.forEach((day) => {
-      day.sections.forEach((sec) => {
-        if (sec.section) sections.add(sec.section)
-      })
-    })
-
-    return Array.from(sections)
-  },
-
-  // This handles the response from our addActivity controller
-  addActivityToTimeline: (updatedDay) => {
-    set((state) => {
-      const existingDayIndex = state.timeline.findIndex(
-        (d) =>
-          new Date(d.date).toDateString() ===
-          new Date(updatedDay.date).toDateString(),
-      )
-
-      if (existingDayIndex > -1) {
-        // Replace the existing day with the updated version from backend
-        const newTimeline = [...state.timeline]
-        newTimeline[existingDayIndex] = updatedDay
-        return { timeline: newTimeline }
-      } else {
-        // Add as a new day and sort by date
-        return {
-          timeline: [...state.timeline, updatedDay].sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-          ),
-        }
-      }
-    })
-  },
-
-  syncDayPlan: (updatedDay) => {
-    set((state) => {
-      const existingDayIndex = state.timeline.findIndex(
-        (d) =>
-          new Date(d.date).toDateString() ===
-          new Date(updatedDay.date).toDateString(),
-      )
-
-      if (existingDayIndex > -1) {
-        const newTimeline = [...state.timeline]
-        newTimeline[existingDayIndex] = updatedDay
-        return { timeline: newTimeline }
-      }
-      return {
-        timeline: [...state.timeline, updatedDay].sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-        ),
-      }
-    })
-  },
-
-  setSectionTitle: (v) => set({ sectionTitle: v }),
-  setCustomSection: (v) => set({ customSection: v }),
-  setSectionDate: (v) => set({ sectionDate: v }),
-
-  setTitle: (v) => set({ title: v }),
-  setTime: (v) => set({ time: v }),
-  setLocation: (v) => set({ location: v }),
-  setType: (v) => set({ type: v }),
-  setNotes: (v) => set({ notes: v }),
-
-  addActivity: (response: GetItineraryResponse) => {
-  const allActivities = response.data.flatMap(day => 
-    day.sections.flatMap(sec => sec.activities)
-  );
-
-  set({ activities: allActivities });
-  get().resetForm();
-},
-
-  resetForm: () =>
     set({
       sectionTitle: "",
       customSection: "",
@@ -110,7 +32,36 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
       title: "",
       time: "",
       location: "",
-      type: "",
+      type: "Activity",
       notes: "",
-    }),
+    })
+  },
+  
+  setLoading: (v) => set({ loading: v }),
+
+  // This single function sets everything from the backend
+  addActivity: (itinerary, sections) => {
+
+  set({
+    timeline: itinerary,
+    existingSections: sections,
+  });
+},
+
+  // Form Setters
+  setSectionTitle: (v) => set({ sectionTitle: v }),
+  setCustomSection: (v) => set({ customSection: v }),
+  setSectionDate: (v) => set({ sectionDate: v }),
+  setTitle: (v) => set({ title: v }),
+  setTime: (v) => set({ time: v }),
+  setLocation: (v) => set({ location: v }),
+  setType: (v) => set({ type: v }),
+  setNotes: (v) => set({ notes: v }),
+
+  // Required by interface but keeping it simple
+  setTimeline: (data, sections) => set({ timeline: data, existingSections: sections }),
+  addActivityToTimeline: (newDay) => set((state) => ({ timeline: [...state.timeline, newDay] })),
+  syncDayPlan: (v) => set({ timeline: v }),
+  addLocalSection: (v) => set((state) => ({ existingSections: [...state.existingSections, v] })),
+  resetForm: () => set({ sectionTitle: "", customSection: "", sectionDate: null, title: "", time: "", location: "", type: "Activity", notes: "" })
 }))
