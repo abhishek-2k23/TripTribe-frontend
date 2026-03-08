@@ -24,7 +24,7 @@ export const useApi = () => {
     }
 
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}${url}`,
+      `${import.meta.env.VITE_API_URL}/api${url}`,
       {
         method,
         headers,
