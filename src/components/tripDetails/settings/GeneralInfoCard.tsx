@@ -170,7 +170,7 @@ function DatePickerItem({ value, onChange, label }: any) {
           {value ? format(new Date(value), "PPP") : `Select ${label}`}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0 bg-card" align="start">
         <Calendar
           mode="single"
           selected={value ? new Date(value) : undefined}
