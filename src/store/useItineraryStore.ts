@@ -1,5 +1,5 @@
 // store/useItineraryStore.ts
-import type { ItineraryState, GetItineraryResponse } from "@/types/itinerary.types"
+import type { ItineraryState } from "@/types/itinerary.types"
 import { create } from "zustand"
 
 export const useItineraryStore = create<ItineraryState>((set) => ({
@@ -61,7 +61,27 @@ export const useItineraryStore = create<ItineraryState>((set) => ({
   // Required by interface but keeping it simple
   setTimeline: (data, sections) => set({ timeline: data, existingSections: sections }),
   addActivityToTimeline: (newDay) => set((state) => ({ timeline: [...state.timeline, newDay] })),
-  syncDayPlan: (v) => set({ timeline: v }),
+  syncDayPlan: (updatedDay) => {
+    set((state) => ({
+      timeline: state.timeline.map((day) => 
+        day._id === updatedDay._id ? updatedDay : day
+      )
+    }));
+  },
   addLocalSection: (v) => set((state) => ({ existingSections: [...state.existingSections, v] })),
-  resetForm: () => set({ sectionTitle: "", customSection: "", sectionDate: null, title: "", time: "", location: "", type: "Activity", notes: "" })
+  resetForm: () => set({ sectionTitle: "", customSection: "", sectionDate: null, title: "", time: "", location: "", type: "Activity", notes: "" }),
+  removeActivityLocally: (itineraryId: string, activityId: string) => {
+    set((state) => ({
+      timeline: state.timeline.map((day) => {
+        if (day._id !== itineraryId) return day;
+        return {
+          ...day,
+          sections: day.sections.map((sec) => ({
+            ...sec,
+            activities: sec.activities.filter((act) => act._id !== activityId)
+          }))
+        };
+      })
+    }));
+  },
 }))

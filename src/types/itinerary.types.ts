@@ -48,7 +48,7 @@ export interface ItineraryState {
   loading: boolean;
   
   // The Main Data Array (Single State)
-  timeline: ItineraryDay[];
+  timeline: any[];
   existingSections: string[];
 
   // Modal Form Data
@@ -76,7 +76,9 @@ export interface ItineraryState {
   setLocation: (v: string) => void;
   setType: (v: string) => void;
   setNotes: (v: string) => void;
+  syncDayPlan: (v: any) => void;
 
   resetForm : () => void;
   addLocalSection: (v: string) => void
+  removeActivityLocally: (id: string, aId: string) => void
 }

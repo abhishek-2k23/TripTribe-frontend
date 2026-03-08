@@ -11,7 +11,8 @@ import useBudgetStore from "@/store/useBudgetStore"
 const useWebSocketEmmits = () => {
   const tripId = useTripDetailsStore((s) => s.selectedTripId)
   const addTrip = useMyTripStore((s) => s.addTrip)
-  const addActivity = useItineraryStore((s) => s.syncDayPlan)
+  const syncDayPlan = useItineraryStore((s) => s.syncDayPlan)
+  const removeActivityLocally = useItineraryStore((s) => s.removeActivityLocally)
   const updateChecklistItem = useChecklistStore((s) => s.updateChecklistItem)
   const setChecklist = useChecklistStore((s) => s.setChecklist)
   const user = useAuthStore((s) => s.backendUser)
@@ -39,10 +40,18 @@ const useWebSocketEmmits = () => {
       // addRecentExpense(newExpense);
     })
 
-    socket.on("activity_added", (newActivity) => {
-      console.log(newActivity)
-      addActivity(newActivity)
-    })
+    socket.on("activity_added", (dayPlan) => {
+      console.log("ws activity_added", dayPlan)
+      syncDayPlan(dayPlan)});
+  socket.on("activity_updated", (dayPlan) => {
+    console.log("ws activity_updated", dayPlan)
+    syncDayPlan(dayPlan)});
+
+  // Listen for Deletions
+  socket.on("activity_deleted", ({ itineraryId, activityId }) => {
+    console.log("ws activity_delete: ", itineraryId, activityId)
+    removeActivityLocally(itineraryId, activityId);
+  });
 
     socket.on("checklist_updated", (updatedCategories) => {
       console.log("Checklist synced with the tribe")
@@ -83,7 +92,7 @@ const useWebSocketEmmits = () => {
       socket.off("expense_added")
       socket.disconnect()
     }
-  }, [tripId, addTrip, addActivity, setChecklist, updateChecklistItem, addExpenseToDashboard])
+  }, [tripId, addTrip, setChecklist, updateChecklistItem, addExpenseToDashboard, removeActivityLocally, syncDayPlan])
 }
 
 export default useWebSocketEmmits

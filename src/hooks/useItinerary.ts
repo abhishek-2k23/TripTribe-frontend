@@ -1,6 +1,7 @@
 import { useApi } from "@/services/api"
 import { useItineraryStore } from "@/store/useItineraryStore"
 import useTripDetailsStore from "@/store/useTripDetails"
+import type { Activity } from "@/types/itinerary.types"
 import toast from "react-hot-toast"
 
 export const useItinerary = () => {
@@ -75,9 +76,29 @@ export const useItinerary = () => {
     toast.error("Something went wrong. Please try again.")
   }
 }
+const handleToggle = async (activity: Activity, itineraryId: string) => {
+  await api.post("/itinerary/activity/status", {
+    itineraryId,
+    activityId: activity._id,
+    isDone: !activity.isDone,
+    tripId: selectedTripId
+  });
+};
+
+const handleDelete = async (activityId: string, itineraryId: string) => {
+    try{
+      await api.delete(`/itinerary/activity/${itineraryId}/${activityId}/${selectedTripId}`);
+    }catch(e){
+      console.log(e);
+    }
+};
+
+
 
   return {
     createActivity,
     fetchItineraries,
+    handleDelete,
+    handleToggle
   }
 }

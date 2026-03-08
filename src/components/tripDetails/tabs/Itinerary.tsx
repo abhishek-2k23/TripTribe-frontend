@@ -1,6 +1,5 @@
 import { useItinerary } from "@/hooks/useItinerary"
 import { useItineraryStore } from "@/store/useItineraryStore"
-import ActivityTimeline from "../itinerary/ActivityTimeLine"
 import useTripDetailsStore from "@/store/useTripDetails"
 import { useEffect } from "react"
 import DiscussionPanel from "../sidebar/DiscussionPanel"
@@ -13,6 +12,7 @@ export default function Itinerary() {
   const selectedTripId = useTripDetailsStore((state) => state.selectedTripId)
   const timeline = useItineraryStore((state) => state.timeline)
   const loading = useItineraryStore((state) => state.loading)
+  
 
   useEffect(() => {
     fetchItineraries()
