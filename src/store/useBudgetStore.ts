@@ -65,6 +65,50 @@ const useBudgetStore = create<BudgetState>((set, get) => ({
 
   dashboard: null,
   setDashboardData: (v) => set({ dashboard: v }),
+  addExpenseToDashboard: (newExpense) => set((state) => {
+  // 1. Safety check using the correct state key 'dashboard'
+  if (!state.dashboard) return state;
+
+  const data = state.dashboard;
+  const amount = Number(newExpense.amount);
+
+  // 2. Recalculate global totals
+  const newTotalSpent = (data.totalSpent || 0) + amount;
+  const newRemaining = (data.totalBudget || 0) - newTotalSpent;
+  const newUtilization = data.totalBudget > 0 
+    ? (newTotalSpent / data.totalBudget) * 100 
+    : 0;
+
+  // 3. Update the specific category slice
+  const updatedCategories = data.categories.map((cat) => {
+    // Note: We use cat.category to match your DashboardCategory interface
+    if (cat.category.toLowerCase() === newExpense.category.toLowerCase()) {
+      const updatedSpent = (cat.spent || 0) + amount;
+      return {
+        ...cat,
+        spent: updatedSpent,
+        // Recalculate percentage for this specific category progress bar
+        percentage: cat.limit > 0 ? (updatedSpent / cat.limit) * 100 : 0,
+      };
+    }
+    return cat;
+  });
+
+  // 4. Update the recent list (ensuring it stays an array)
+  const updatedRecent = [newExpense, ...(data.recentExpenses || [])].slice(0, 10);
+
+  // 5. Return the update to the 'dashboard' key
+  return {
+    dashboard: {
+      ...data,
+      totalSpent: newTotalSpent,
+      remaining: newRemaining,
+      utilization: newUtilization,
+      categories: updatedCategories,
+      recentExpenses: updatedRecent as [], // Cast to match your specific interface type
+    }
+  };
+}),
 
   showSettleMentScreen: false,
   setShowSettleMentScreen: (v) => set({ showSettleMentScreen: v }),

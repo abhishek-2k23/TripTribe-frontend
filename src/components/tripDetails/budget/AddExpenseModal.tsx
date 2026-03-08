@@ -166,7 +166,7 @@ const toggleMember = (id: string) => {
                 </Button>
               </PopoverTrigger>
 
-              <PopoverContent>
+              <PopoverContent className="bg-card">
                 <Calendar
                   mode="single"
                   selected={form.date ?? undefined}

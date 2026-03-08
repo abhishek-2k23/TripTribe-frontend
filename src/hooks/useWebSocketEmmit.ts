@@ -6,6 +6,7 @@ import { useChecklistStore } from "@/store/useCheckListStore"
 import useAuthStore from "@/store/useAuthStore"
 import useTripDetailsStore from "@/store/useTripDetails"
 import useMyTripStore from "@/store/useMyTrip"
+import useBudgetStore from "@/store/useBudgetStore"
 
 const useWebSocketEmmits = () => {
   const tripId = useTripDetailsStore((s) => s.selectedTripId)
@@ -14,6 +15,7 @@ const useWebSocketEmmits = () => {
   const updateChecklistItem = useChecklistStore((s) => s.updateChecklistItem)
   const setChecklist = useChecklistStore((s) => s.setChecklist)
   const user = useAuthStore((s) => s.backendUser)
+  const addExpenseToDashboard = useBudgetStore((s) => s.addExpenseToDashboard)
 
   useEffect(() => {
     if (!tripId) return
@@ -64,6 +66,13 @@ const useWebSocketEmmits = () => {
       }
     })
 
+    socket.on("expense_added", (newExpense) => {
+      console.log("expense_added: ", newExpense);
+    addExpenseToDashboard(newExpense);
+    
+    toast.success(`New expense: ${newExpense.title} (${newExpense.amount})`);
+  });
+
     // 4. Cleanup: Disconnect when leaving the trip details
     return () => {
       console.log(`Leaving Trip: ${tripId}`)
@@ -71,9 +80,10 @@ const useWebSocketEmmits = () => {
       socket.off("expense_added")
       socket.off("activity_added")
       socket.off("task_toggled")
+      socket.off("expense_added")
       socket.disconnect()
     }
-  }, [tripId, addTrip, addActivity, setChecklist, updateChecklistItem])
+  }, [tripId, addTrip, addActivity, setChecklist, updateChecklistItem, addExpenseToDashboard])
 }
 
 export default useWebSocketEmmits
