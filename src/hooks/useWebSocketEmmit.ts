@@ -1,0 +1,79 @@
+import { useEffect } from "react"
+import { socket } from "@/lib/socket"
+import toast from "react-hot-toast"
+import { useItineraryStore } from "@/store/useItineraryStore"
+import { useChecklistStore } from "@/store/useCheckListStore"
+import useAuthStore from "@/store/useAuthStore"
+import useTripDetailsStore from "@/store/useTripDetails"
+import useMyTripStore from "@/store/useMyTrip"
+
+const useWebSocketEmmits = () => {
+  const tripId = useTripDetailsStore((s) => s.selectedTripId)
+  const addTrip = useMyTripStore((s) => s.addTrip)
+  const addActivity = useItineraryStore((s) => s.syncDayPlan)
+  const updateChecklistItem = useChecklistStore((s) => s.updateChecklistItem)
+  const setChecklist = useChecklistStore((s) => s.setChecklist)
+  const user = useAuthStore((s) => s.backendUser)
+
+  useEffect(() => {
+    if (!tripId) return
+    socket.connect()
+
+    socket.on("connect", () => {
+      console.log(`Connected to Trip: ${tripId}`)
+      // 2. Join the specific Room immediately
+      socket.emit("join_trip", tripId)
+    })
+
+    socket.on("member_joined", (populatedTrip) => {
+      addTrip(populatedTrip)
+      console.log("A new traveler joined the tribe!", populatedTrip)
+
+      toast.success(`New member joined the trip!`)
+    })
+
+    socket.on("expense_added", (newExpense) => {
+      console.log(newExpense)
+      // addRecentExpense(newExpense);
+    })
+
+    socket.on("activity_added", (newActivity) => {
+      console.log(newActivity)
+      addActivity(newActivity)
+    })
+
+    socket.on("checklist_updated", (updatedCategories) => {
+      console.log("Checklist synced with the tribe")
+
+      // Replace the local checklist state with the fresh categories from backend
+      setChecklist(updatedCategories)
+
+      toast.success("Checklist updated!")
+    })
+
+    socket.on("task_toggled", ({ categoryId, itemId, updatedItem }) => {
+      console.log("Checklist sync from tribe:", updatedItem)
+
+      updateChecklistItem(categoryId, itemId, updatedItem)
+
+      const lastUser =
+        updatedItem.completedBy[updatedItem.completedBy.length - 1]
+
+      if (updatedItem.completedBy.length > 0 && lastUser?._id !== user?._id) {
+        toast.success(`${lastUser?.name} completed: ${updatedItem.title}`)
+      }
+    })
+
+    // 4. Cleanup: Disconnect when leaving the trip details
+    return () => {
+      console.log(`Leaving Trip: ${tripId}`)
+      socket.emit("leave_trip", tripId)
+      socket.off("expense_added")
+      socket.off("activity_added")
+      socket.off("task_toggled")
+      socket.disconnect()
+    }
+  }, [tripId, addTrip, addActivity, setChecklist, updateChecklistItem])
+}
+
+export default useWebSocketEmmits
