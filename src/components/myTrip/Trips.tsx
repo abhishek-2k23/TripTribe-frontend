@@ -40,7 +40,7 @@ function Trips() {
               }
               className="flex items-stretch"
             >
-              <TripCard key={trip._id} {...trip} activityCount={0} budgetTotal={0} />{" "}
+              <TripCard key={trip._id} {...trip} />{" "}
             </div>
           ))}
         </div>) }

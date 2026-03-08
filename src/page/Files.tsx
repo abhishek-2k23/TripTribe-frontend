@@ -1,7 +1,8 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment"
 
 function Files() {
   return (
-    <div>Files</div>
+   <UnderDevelopment />
   )
 }
 

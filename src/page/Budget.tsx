@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button'
+import UnderDevelopment from '@/components/common/UnderDevelopment'
 
 function Budget() {
   return (
-    <div>
-      
-      <Button variant={"hero"} >Budget</Button>
+    <div className=' '>
+
+      <UnderDevelopment />
     </div>
   )
 }

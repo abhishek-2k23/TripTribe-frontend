@@ -1,8 +1,9 @@
+import UnderDevelopment from "@/components/common/UnderDevelopment"
 
 
 function CheckLists() {
   return (
-    <div>CheckLists</div>
+    <UnderDevelopment />
   )
 }
 

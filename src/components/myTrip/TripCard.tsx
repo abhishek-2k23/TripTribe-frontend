@@ -13,8 +13,6 @@ export default function TripCard({
   endDate,
   image,
   members = [],
-  activityCount = 0,
-  budgetTotal = 0,
   description
 }: TripCardProps) {
   const backenduser = useAuthStore((state) => state.backendUser)
@@ -72,23 +70,17 @@ export default function TripCard({
 
         <div className="flex justify-between items-center text-sm font-medium text-foreground">
           <div className="flex flex-col items-center ">
-            <div>{days}</div>
+            <div>Duration</div>
             <div className="text-xs text-muted-foreground">
-              Days
+              {days} {days > 1 ? "Days" : "Day"}
             </div>
           </div>
 
-          <div className="flex flex-col items-center ">
-            <div>{activityCount}</div>
-            <div className="text-xs text-muted-foreground">
-              Activities
-            </div>
-          </div>
 
           <div className="flex flex-col items-center ">
-            <div>₹{budgetTotal}</div>
+            <div>Group</div>
             <div className="text-xs text-muted-foreground">
-              Budget
+              {displayMembers.length} {displayMembers.length === 1 ? "Traveller" : "Travellers"}
             </div>
           </div>
         </div>
@@ -112,7 +104,6 @@ export default function TripCard({
               </div>
             )}
           </div>
-
           <span className="text-xs text-muted-foreground">
             {members.length} {members.length > 1 ? "Members" : "Member"}
           </span>
