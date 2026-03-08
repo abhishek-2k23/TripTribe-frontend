@@ -1,5 +1,5 @@
 // store/useItineraryStore.ts
-import type { ItineraryState } from "@/types/itinerary.types"
+import type { ItineraryDay, ItineraryState } from "@/types/itinerary.types"
 import { create } from "zustand"
 
 export const useItineraryStore = create<ItineraryState>((set) => ({
@@ -64,13 +64,41 @@ export const useItineraryStore = create<ItineraryState>((set) => ({
     set({ timeline: data, existingSections: sections }),
   addActivityToTimeline: (newDay: any) =>
     set((state) => ({ timeline: [...state.timeline, newDay] })),
-  syncDayPlan: (updatedDay) => {
-    set((state) => ({
-      timeline: state.timeline.map((day) =>
-        day._id === updatedDay._id ? updatedDay : day,
-      ),
-    }))
+
+  //sync day for ws
+  syncDayPlan: (updatedDay: ItineraryDay) => {
+    set((state) => {
+      // Check if this day already exists in our local state
+      const dayExists = state.timeline.some((day) => day._id === updatedDay._id)
+
+      if (dayExists) {
+        // CASE 2: Day exists. Replace the old version with the new one (includes new activities/sections)
+        return {
+          timeline: state.timeline.map((day) =>
+            day._id === updatedDay._id ? updatedDay : day,
+          ),
+        }
+      } else {
+        // CASE 1: Completely new day. Add it to the array and re-sort by date.
+        const newTimeline = [...state.timeline, updatedDay].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        )
+
+        return {
+          timeline: newTimeline,
+          // Also update existingSections if the new day brought a new section title
+          existingSections: Array.from(
+            new Set([
+              ...state.existingSections,
+              ...updatedDay.sections.map((s) => s.section),
+            ]),
+          ),
+        }
+      }
+    })
   },
+
+  
   addLocalSection: (v) =>
     set((state) => ({ existingSections: [...state.existingSections, v] })),
   resetForm: () =>

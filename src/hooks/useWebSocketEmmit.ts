@@ -12,7 +12,9 @@ const useWebSocketEmmits = () => {
   const tripId = useTripDetailsStore((s) => s.selectedTripId)
   const addTrip = useMyTripStore((s) => s.addTrip)
   const syncDayPlan = useItineraryStore((s) => s.syncDayPlan)
-  const removeActivityLocally = useItineraryStore((s) => s.removeActivityLocally)
+  const removeActivityLocally = useItineraryStore(
+    (s) => s.removeActivityLocally,
+  )
   const updateChecklistItem = useChecklistStore((s) => s.updateChecklistItem)
   const setChecklist = useChecklistStore((s) => s.setChecklist)
   const user = useAuthStore((s) => s.backendUser)
@@ -23,14 +25,12 @@ const useWebSocketEmmits = () => {
     socket.connect()
 
     socket.on("connect", () => {
-      console.log(`Connected to Trip: ${tripId}`)
       // 2. Join the specific Room immediately
       socket.emit("join_trip", tripId)
     })
 
     socket.on("member_joined", (populatedTrip) => {
       addTrip(populatedTrip)
-      console.log("A new traveler joined the tribe!", populatedTrip)
 
       toast.success(`New member joined the trip!`)
     })
@@ -41,20 +41,18 @@ const useWebSocketEmmits = () => {
     })
 
     socket.on("activity_added", (dayPlan) => {
-      console.log("ws activity_added", dayPlan)
-      syncDayPlan(dayPlan)});
-  socket.on("activity_updated", (dayPlan) => {
-    console.log("ws activity_updated", dayPlan)
-    syncDayPlan(dayPlan)});
+      syncDayPlan(dayPlan)
+    })
+    socket.on("activity_updated", (dayPlan) => {
+      syncDayPlan(dayPlan)
+    })
 
-  // Listen for Deletions
-  socket.on("activity_deleted", ({ itineraryId, activityId }) => {
-    console.log("ws activity_delete: ", itineraryId, activityId)
-    removeActivityLocally(itineraryId, activityId);
-  });
+    // Listen for Deletions
+    socket.on("activity_deleted", ({ itineraryId, activityId }) => {
+      removeActivityLocally(itineraryId, activityId)
+    })
 
     socket.on("checklist_updated", (updatedCategories) => {
-      console.log("Checklist synced with the tribe")
 
       // Replace the local checklist state with the fresh categories from backend
       setChecklist(updatedCategories)
@@ -63,7 +61,6 @@ const useWebSocketEmmits = () => {
     })
 
     socket.on("task_toggled", ({ categoryId, itemId, updatedItem }) => {
-      console.log("Checklist sync from tribe:", updatedItem)
 
       updateChecklistItem(categoryId, itemId, updatedItem)
 
@@ -76,11 +73,10 @@ const useWebSocketEmmits = () => {
     })
 
     socket.on("expense_added", (newExpense) => {
-      console.log("expense_added: ", newExpense);
-    addExpenseToDashboard(newExpense);
-    
-    toast.success(`New expense: ${newExpense.title} (${newExpense.amount})`);
-  });
+      addExpenseToDashboard(newExpense)
+
+      toast.success(`New expense: ${newExpense.title} (${newExpense.amount})`)
+    })
 
     // 4. Cleanup: Disconnect when leaving the trip details
     return () => {
@@ -92,7 +88,15 @@ const useWebSocketEmmits = () => {
       socket.off("expense_added")
       socket.disconnect()
     }
-  }, [tripId, addTrip, setChecklist, updateChecklistItem, addExpenseToDashboard, removeActivityLocally, syncDayPlan])
+  }, [
+    tripId,
+    addTrip,
+    setChecklist,
+    updateChecklistItem,
+    addExpenseToDashboard,
+    removeActivityLocally,
+    syncDayPlan,
+  ])
 }
 
 export default useWebSocketEmmits
