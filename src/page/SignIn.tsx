@@ -25,7 +25,7 @@ const SignIn = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy text-white">
             <Compass className="w-6 h-6"/>
           </div>
-          <span className="text-lg font-bold text-foreground">TripTribe</span>
+          <span className="text-lg font-bold text-foreground">Trip Tribe</span>
         </div>
 
         {/* Login Content */}
@@ -50,7 +50,7 @@ const SignIn = () => {
           </Button>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            By continuing, you agree to TripTribe's{" "}
+            By continuing, you agree to Trip Tribe's{" "}
             <a href="#" className="text-primary hover:underline">Terms of Service</a>{" "}
             and{" "}
             <a href="#" className="text-primary hover:underline">Privacy Policy</a>

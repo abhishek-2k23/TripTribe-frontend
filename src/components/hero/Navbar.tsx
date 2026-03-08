@@ -9,7 +9,7 @@ const Navbar = () => {
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-2">
           <Compass className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold text-foreground">TripTribe</span>
+          <span className="text-lg font-bold text-foreground">Trip Tribe</span>
         </div>
 
         {/* <div className="hidden items-center gap-8 md:flex">

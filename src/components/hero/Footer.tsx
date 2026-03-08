@@ -39,7 +39,7 @@ const Footer = () => {
         </div> */}
 
         <div className=" border-t border-border pt-8 text-center text-xs text-muted-foreground">
-          © 2026 TripTribe. All rights reserved.
+          © 2026 Trip Tribe. All rights reserved.
         </div>
       </div>
     </footer>

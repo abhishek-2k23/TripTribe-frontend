@@ -18,7 +18,7 @@ export default function Sidebar() {
       <div>
         <div className="flex items-center gap-3 mb-5">
           <Compass className="h-6 w-6 text-white" />
-          <span className="text-lg font-bold text-white">TripTribe</span>
+          <span className="text-lg font-bold text-white">Trip Tribe</span>
         </div>
 
         <nav className="flex flex-col gap-2">
