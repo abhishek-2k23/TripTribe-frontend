@@ -8,7 +8,7 @@ export const useItineraryStore = create<ItineraryState>((set) => ({
   loading: false,
 
   // --- Itinerary Source of Truth ---
-  timeline: [], 
+  timeline: [],
   existingSections: [],
 
   // --- Form Data for Modal ---
@@ -36,17 +36,18 @@ export const useItineraryStore = create<ItineraryState>((set) => ({
       notes: "",
     })
   },
-  
+
   setLoading: (v) => set({ loading: v }),
 
   // This single function sets everything from the backend
   addActivity: (itinerary, sections) => {
-
-  set({
-    timeline: itinerary,
-    existingSections: sections,
-  });
-},
+    if (Array.isArray(itinerary)) {
+      set({
+        timeline: itinerary,
+        existingSections: sections,
+      })
+    }
+  },
 
   // Form Setters
   setSectionTitle: (v) => set({ sectionTitle: v }),
@@ -59,29 +60,44 @@ export const useItineraryStore = create<ItineraryState>((set) => ({
   setNotes: (v) => set({ notes: v }),
 
   // Required by interface but keeping it simple
-  setTimeline: (data, sections) => set({ timeline: data, existingSections: sections }),
-  addActivityToTimeline: (newDay) => set((state) => ({ timeline: [...state.timeline, newDay] })),
+  setTimeline: (data: any, sections: any) =>
+    set({ timeline: data, existingSections: sections }),
+  addActivityToTimeline: (newDay: any) =>
+    set((state) => ({ timeline: [...state.timeline, newDay] })),
   syncDayPlan: (updatedDay) => {
     set((state) => ({
-      timeline: state.timeline.map((day) => 
-        day._id === updatedDay._id ? updatedDay : day
-      )
-    }));
+      timeline: state.timeline.map((day) =>
+        day._id === updatedDay._id ? updatedDay : day,
+      ),
+    }))
   },
-  addLocalSection: (v) => set((state) => ({ existingSections: [...state.existingSections, v] })),
-  resetForm: () => set({ sectionTitle: "", customSection: "", sectionDate: null, title: "", time: "", location: "", type: "Activity", notes: "" }),
+  addLocalSection: (v) =>
+    set((state) => ({ existingSections: [...state.existingSections, v] })),
+  resetForm: () =>
+    set({
+      sectionTitle: "",
+      customSection: "",
+      sectionDate: null,
+      title: "",
+      time: "",
+      location: "",
+      type: "Activity",
+      notes: "",
+    }),
   removeActivityLocally: (itineraryId: string, activityId: string) => {
     set((state) => ({
       timeline: state.timeline.map((day) => {
-        if (day._id !== itineraryId) return day;
+        if (day._id !== itineraryId) return day
         return {
           ...day,
-          sections: day.sections.map((sec) => ({
+          sections: day.sections.map((sec: any) => ({
             ...sec,
-            activities: sec.activities.filter((act) => act._id !== activityId)
-          }))
-        };
-      })
-    }));
+            activities: sec.activities.filter(
+              (act: any) => act._id !== activityId,
+            ),
+          })),
+        }
+      }),
+    }))
   },
 }))

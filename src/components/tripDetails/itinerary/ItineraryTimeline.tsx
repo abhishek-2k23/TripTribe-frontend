@@ -2,6 +2,7 @@ import { useItineraryStore } from "@/store/useItineraryStore"
 import { format } from "date-fns"
 import AddActivityButton from "../AddActivityButton"
 import { useState } from "react"
+import type { Activity } from "@/types/itinerary.types"
 import { useItinerary } from "@/hooks/useItinerary"
 import {
   CheckCircle2,
@@ -79,7 +80,7 @@ export function ItineraryTimeline() {
             {/* Activities List - Collapsible */}
             {!isCollapsed && (
               <div className="ml-6 border-l-2 border-slate-100 pl-10 space-y-6 transition-all">
-                {day.sections.map((section) =>
+                {day.sections.map((section: {section: string, activities: Activity[]}) =>
                   section.activities.map((activity) => (
                     <div
                       key={activity._id}

@@ -48,7 +48,7 @@ export interface ItineraryState {
   loading: boolean;
   
   // The Main Data Array (Single State)
-  timeline: any[];
+  timeline: ItineraryDay[];
   existingSections: string[];
 
   // Modal Form Data
