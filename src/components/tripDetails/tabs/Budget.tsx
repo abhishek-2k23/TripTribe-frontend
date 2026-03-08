@@ -1,18 +1,13 @@
-import AddExpenseModal from "../budget/AddExpenseModal"
-
 import { Button } from "@/components/ui/button"
 import useBudgetStore from "@/store/useBudgetStore"
 import BudgetSummaryCards from "../budget/BudgetSummaryCards"
 import WhoOwesWhoList from "../budget/WhoOwesWhoList"
-import TravelerBalancesCard from "../budget/TravelerBalancesCard"
 import { useEffect, useRef } from "react"
 import useBudget from "@/hooks/useBudget"
 import toast from "react-hot-toast"
 import useTripDetailsStore from "@/store/useTripDetails"
 import { RefreshCwIcon } from "lucide-react"
-import DashboardLayout from "@/components/layout/DashboardLayout"
 import { SettlementSkeleton } from "@/components/shimmerUI/SettlementSkelton"
-import useAuthStore from "@/store/useAuthStore"
 
 export default function Budget() {
   const setLoading = useBudgetStore((s) => s.setLoading)
@@ -29,7 +24,7 @@ export default function Budget() {
     try{
       getTripDebts();
       toast.success("Your budget is loaded Successfully", {id: toastId})
-    }catch(e){
+    }catch(e:any){
       toast.error(e.message);
     }finally{
       toast.dismiss(toastId);

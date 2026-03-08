@@ -46,7 +46,7 @@ export const useTripSettings = () => {
     const toastId = toast.loading("updating trip details ")
     console.log(tripId);
     try {
-      const res = await api.put(`/trips/${tripId}`, settingsPayload)
+      const res:any = await api.put(`/trips/${tripId}`, settingsPayload)
       if (res.success) {
         // Update the main trips list in global state
         console.log(res);
@@ -54,7 +54,7 @@ export const useTripSettings = () => {
         console.log(res)
         toast.success("Settings saved!", {id: toastId})
       }
-    } catch (e) {
+    } catch (e:any) {
       console.log(e)
       toast.error(e.message, {id: toastId})
     }
@@ -80,14 +80,14 @@ export const useTripSettings = () => {
   const handleDeleteMember = async (userId: string) => {
     setDeletingMember(userId) // Start loading state for this specific user
     try {
-      const res = await api.delete(`/trips/${selectedTripId}/members/${userId}`)
+      const res:any = await api.delete(`/trips/${selectedTripId}/members/${userId}`)
 
       if (res.success) {
-        removeMember(userId) // Update UI
+        removeMember(userId) 
         toast.success("Member removed")
       }
-    } catch (error) {
-      toast.error("Failed to remove member")
+    } catch (error:any) {
+      toast.error(error.message||"Failed to remove member")
     } finally {
       setDeletingMember(null) // Stop loading state
     }

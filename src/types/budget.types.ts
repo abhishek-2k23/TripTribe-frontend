@@ -21,6 +21,19 @@ export interface ExpenseForm {
   splitEqually: boolean
   notes: string
 }
+
+export interface Expense {
+  _id: string
+  title: string
+  category: string
+  expenseDate: string
+  paidBy: {
+    imageUrl?: string
+    name: string
+  }
+  participants: any[]
+  amount: number
+}
 export interface DashboardCategory {
   category: string
   spent: number
@@ -34,7 +47,7 @@ export interface BudgetDashboardData {
   remaining: number
   utilization: number
   categories: DashboardCategory[]
-  recentExpenses: []
+  recentExpenses: Expense[]
 }
 
 export interface Debt {

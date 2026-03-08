@@ -9,14 +9,9 @@ function Header() {
     const clerkUser = useAuthStore((state) => state.clerkUser);
 
     const setOpen = useMyTripStore((state) => state.setIsCreateTripModalOpen);  
-    const setIsJoinTripOpen = useMyTripStore((state) => state.setIsJoinTripOpen);  
 
     const handleCreateNewTrip = () => {
         setOpen(true);
-    }
-
-    const handleJoinTrip = () => {
-        setIsJoinTripOpen(true);
     }
     
   return (

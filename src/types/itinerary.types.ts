@@ -76,11 +76,10 @@ export interface ItineraryState {
   setLocation: (v: string) => void
   setType: (v: string) => void
   setNotes: (v: string) => void
-  setAttachment: (v: File | null) => void
   setTimeline: (data: ItineraryDay[]) => void;
   addActivityToTimeline: (newDay: ItineraryDay) => void;
   syncDayPlan: (v: any) => void;
-  getSectionOptions: () => [];
+  getSectionOptions: () => string[];
   // actions
   addActivity: (activities: GetItineraryResponse) => void
   resetForm: () => void

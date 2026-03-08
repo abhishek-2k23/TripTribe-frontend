@@ -55,7 +55,7 @@ export default function BudgetScreen() {
       <div className="flex  gap-8 ">
         <RecentExpensesTable />
 
-        <CategoryBreakdown categories={dashboardData?.categories} />
+        <CategoryBreakdown categories={dashboardData?.categories || []} />
       </div>
     </div>
   )

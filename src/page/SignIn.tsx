@@ -19,7 +19,7 @@ const SignIn = () => {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       {/* Left Panel - Login */}
-      <div className="flex w-full flex-col justify-between bg-card px-8 py-8 lg:w-[420px] lg:px-12">
+      <div className="flex w-full flex-col justify-between bg-card px-8 py-8 lg:w-105 lg:px-12">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy text-white">

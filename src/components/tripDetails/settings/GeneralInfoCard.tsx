@@ -25,7 +25,6 @@ export default function TripGeneralInfo() {
     endDate,
     setEndDate,
     coverImage,
-    setCoverImage,
     tripDescription,
     setTripDescription,
     tripLocation,

@@ -31,7 +31,7 @@ const useBudget = () => {
   const addBudget = async () => {
     const toastId = toast.loading("wait, adding your expense")
     try {
-      const res = await api.post(`/expenses/add/${selectedTripId}`, {
+      const res:any = await api.post(`/expenses/add/${selectedTripId}`, {
         selectedTripId,
         ...form,
         splitType,
@@ -60,13 +60,13 @@ const useBudget = () => {
 
   const getTravellerBalance = async () => {
     try {
-      const res = await api.get(`/expenses/balances/${selectedTripId}`)
+      const res:any = await api.get(`/expenses/balances/${selectedTripId}`)
 
       useBudgetStore.setState({
         travelerBalances: res.data,
       })
       console.log("get Traveller Balance budget", res)
-    } catch (error) {
+    } catch (error:any) {
       console.error("Traveller balance error:", error)
     }
   }
@@ -74,7 +74,7 @@ const useBudget = () => {
   const settleExpense = async (expenseId: string, userId: string) => {
     const td = toast.loading("Wait, settling your expense");
     try {
-      const res = await api.post(`/expenses/settle`, {
+      const res:any = await api.post(`/expenses/settle`, {
         expenseId,
         userId,
       })
@@ -83,7 +83,7 @@ const useBudget = () => {
         useBudgetStore.getState().settleDebt(expenseId, userId)
         toast.success(res.message, {id: td})
       }
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message, {id: td});
       console.error("Settle expense error:", error)
     }
@@ -91,19 +91,19 @@ const useBudget = () => {
 
   const getTripDebts = async () => {
     try {
-      const res = await api.get(`/expenses/debts/${selectedTripId}`)
+      const res:any = await api.get(`/expenses/debts/${selectedTripId}`)
       console.log("get Trip debts", res)
       if (res.success) {
         setBudgetData(res.data)
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error("Get debts error:", error)
     }
   }
 
   const getTripBudgetSummary = async () => {
     try {
-      const res = await api.get(`/expenses/summary/${selectedTripId}`)
+      const res:any = await api.get(`/expenses/summary/${selectedTripId}`)
       console.log("getTripBudget", res)
       const data = res.data
 
@@ -111,7 +111,7 @@ const useBudget = () => {
         totalDebt: data.totalDebt,
         yourBalance: data.yourBalance,
       })
-    } catch (error) {
+    } catch (error:any) {
       console.error("Budget summary error:", error)
     }
   }
@@ -124,7 +124,7 @@ const useBudget = () => {
     const toastId = toast.loading("Updating trip budget...")
 
     try {
-      const response = await api.patch(`/trips/${selectedTripId}/budget`, {
+      const response:any = await api.patch(`/trips/${selectedTripId}/budget`, {
         total: budgetForm.total,
         categories: budgetForm.categories,
       })
@@ -146,13 +146,13 @@ const useBudget = () => {
     const toastId = toast.loading("Loading budget details")
     setLoading(true);
     try{
-      const res = await api.get(`/expenses/budgetDashBoard/${selectedTripId}`);
+      const res:any = await api.get(`/expenses/budgetDashBoard/${selectedTripId}`);
       if(res.success){
         console.log(res);
         setDashboardData(res.data);
         toast.success("Budget Loaded successfully", {id: toastId});
       }
-    }catch(e){
+    }catch(e:any){
       console.log(e);
       toast.error(e.message, {id: toastId});
     }finally{

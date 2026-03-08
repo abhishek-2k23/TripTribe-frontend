@@ -3,6 +3,7 @@ import useAuthStore from "@/store/useAuthStore"
 import { useChecklistStore } from "@/store/useCheckListStore"
 import useTripDetailsStore from "@/store/useTripDetails"
 import toast from "react-hot-toast"
+import type { Category } from "@/store/useCheckListStore"
 
 
 const useChecklist = () => {
@@ -22,7 +23,7 @@ const useChecklist = () => {
   ) => {
     const td = toast.loading("Adding items to tribe checklist...")
     try {
-      const res = await api.post(`/checklist/addItems/${tripId}`, {
+      const res:any = await api.post(`/checklist/addItems/${tripId}`, {
         categoryName,
         itemNames,
       })
@@ -39,7 +40,7 @@ const useChecklist = () => {
   const fetchChecklist = async () => {
     setLoading(true)
     try {
-      const res = await api.get(`/checklist/fetchLists/${selectedTripId}`)
+      const res:any = await api.get(`/checklist/fetchLists/${selectedTripId}`)
       if (res.success) {
         setChecklist(res.data.categories)
       }
@@ -51,49 +52,53 @@ const useChecklist = () => {
   }
 
   const toggleItem = async (
-    categoryId: string,
-    itemId: string,
-    isChecked: boolean, // Renamed for clarity: Are you checking or unchecking?
-  ) => {
-    // Save current state for potential rollback
-    const previousChecklists = [...checklists]
-    
-    // 1. OPTIMISTIC UPDATE: Update UI immediately
-    // We simulate what the backend will do: add/remove our user object from the array
-    const updatedChecklists = checklists.map((cat) => {
-      if (cat._id !== categoryId) return cat
-      return {
-        ...cat,
-        items: cat.items.map((item) => {
-          if (item._id !== itemId) return item
-          
-          const newCompletedBy = isChecked
-            ? [...item.completedBy, { _id: user?._id, name: user?.name, imageUrl: user?.imageUrl }]
-            : item.completedBy.filter((u: any) => u._id !== user?._id)
-            
-          return { ...item, completedBy: newCompletedBy }
-        }),
-      }
-    })
+  categoryId: string,
+  itemId: string,
+  isChecked: boolean,
+) => {
+  const previousChecklists = [...checklists];
 
-    setChecklist(updatedChecklists)
+  // 1. OPTIMISTIC UPDATE
+  const updatedChecklists = checklists.map((cat) => {
+    if (cat._id !== categoryId) return cat;
+    return {
+      ...cat,
+      items: cat.items.map((item) => {
+        if (item._id !== itemId) return item;
 
-    try {
-      const res = await api.post(
-        `/checklist/${selectedTripId}/checklist/${categoryId}/items/${itemId}`,
-        { isChecked }, // Backend handles $addToSet or $pull
-      )
+        // Use fallbacks to ensure type compatibility (string | undefined -> string)
+        const currentUserObj = {
+          _id: user?._id || "", 
+          name: user?.name || "Unknown",
+          imageUrl: user?.imageUrl || "",
+        };
 
-      if (res.success) {
-        // res.data is the updated item populated with user details
-        updateChecklistItem(categoryId, itemId, res.data) 
-      }
-    } catch (error) {
-      // Rollback on failure
-      setChecklist(previousChecklists)
-      toast.error("Sync failed. Please try again.")
+        const newCompletedBy = isChecked
+          ? [...item.completedBy, currentUserObj]
+          : item.completedBy.filter((u) => u._id !== user?._id);
+
+        return { ...item, completedBy: newCompletedBy };
+      }),
+    };
+  });
+
+  // Cast to Category[] if necessary to satisfy the setter
+  setChecklist(updatedChecklists as Category[]);
+
+  try {
+    const res: any = await api.post(
+      `/checklist/${selectedTripId}/checklist/${categoryId}/items/${itemId}/toggle`,
+      { isChecked }
+    );
+
+    if (res.success) {
+      updateChecklistItem(categoryId, itemId, res.data);
     }
+  } catch (error: any) {
+    setChecklist(previousChecklists);
+    toast.error("Sync failed. Please try again.");
   }
+};
 
   return {
     addItems,

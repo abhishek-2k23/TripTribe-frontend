@@ -33,8 +33,6 @@ export default function TripCard({
     (member) => member.user._id === currentUserId && member.role === "owner"
   )
 
-  const dummyImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
-
   return (
     <Card className="rounded-xl overflow-hidden hover:shadow-lg transition-all">
 

@@ -1,7 +1,6 @@
 import { useApi } from "@/services/api"
 import { useItineraryStore } from "@/store/useItineraryStore"
 import useTripDetailsStore from "@/store/useTripDetails"
-import toast from "react-hot-toast"
 
 export const useItinerary = () => {
   const api = useApi()
@@ -19,7 +18,7 @@ export const useItinerary = () => {
 
   const fetchItineraries = async () => {
     try {
-      const res = await api.get(`/itinerary/getTripItinerary/${selectedTripId}`)
+      const res:any = await api.get(`/itinerary/getTripItinerary/${selectedTripId}`)
 
       if (res.success) {
         // res.data.data is the 'dayPlan' returned by our controller
@@ -43,7 +42,7 @@ export const useItinerary = () => {
         type,
         notes,
       }
-      const res = await api.post("/itinerary/addActivity", formData)
+      const res:any = await api.post("/itinerary/addActivity", formData)
       if (res.success) {
         console.log(res)
         fetchItineraries()

@@ -3,13 +3,6 @@ import useMyTripStore from "@/store/useMyTrip"
 import useTripDetailsStore from "@/store/useTripDetails"
 import toast from "react-hot-toast"
 
-type tripData = {
-  name: string
-  description: string
-  startDate: string
-  endDate: string
-  image: File | null
-}
 const useMyTrips = () => {
   const api = useApi()
   const { setTrip, addTrip, setIsLoading } = useMyTripStore()
@@ -33,8 +26,8 @@ const useMyTrips = () => {
           console.log("cover image upload: ", uploadRes)
           imageUrl.url = uploadRes.data.url
           imageUrl.public_id = uploadRes.data.publid_id
-        } catch (e) {
-          toast.error("Failed to upload the cover image. Using dummy image")
+        } catch (e:any) {
+          toast.error(e.message || "Failed to upload the cover image. Using dummy image")
         }
       }
 
@@ -66,9 +59,9 @@ const useMyTrips = () => {
     setIsLoading(true)
     console.log("fetching trip")
     try {
-      const response = await api.get("/trips/my-trips")
+      const response:any = await api.get("/trips/my-trips")
       setTrip(response.data)
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error fetching trips:", error)
     } finally {
       setIsLoading(false)
@@ -79,13 +72,13 @@ const useMyTrips = () => {
     const toastId = toast.loading("loading the trip details")
     try {
       console.log(selectedTripId)
-      const res = await api.get(`/trips/${tripId}`)
+      const res:any = await api.get(`/trips/${tripId}`)
       if (res.success) {
         toast.success("Trip data loaded successfully", { id: toastId })
         setSelectedTrip(res.data)
       }
       console.log(res)
-    } catch (e) {
+    } catch (e:any) {
       console.log(e.message)
       toast.error(e.message, { id: toastId })
     }
@@ -93,7 +86,7 @@ const useMyTrips = () => {
   const joinTrip = async (inviteCode: string) => {
     const toastId = toast.loading("joining the trip")
     try {
-      const response = await api.post("/trips/join", { inviteCode })
+      const response:any = await api.post("/trips/join", { inviteCode })
       console.log(response)
       if (response.success) {
         addTrip(response.data)
@@ -101,7 +94,7 @@ const useMyTrips = () => {
         toast.success("Joined Trip successfully")
         console.log(response)
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log("error in joining trips: ", error)
       toast.dismiss(toastId)
       toast.error(error.message)

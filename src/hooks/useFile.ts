@@ -18,14 +18,14 @@ export const useFileActions = () => {
 }
       const td = toast.loading("uploading")
     try {
-      const res = await api.post("/files/upload-raw", formData);
+      const res:any = await api.post("/files/upload-raw", formData);
       // Open the detail dialog with the Cloudinary response
       
       setFileName(res.data.originalName);
       setDialogOpen(true); 
       setTempFileData(res.data);
       toast.success("Uploaded Successfully", {id: td})
-    } catch (error) {
+    } catch (error:any) {
       toast.error("Upload failed", {id: td});
       console.log(error);
     } finally {
@@ -44,7 +44,7 @@ export const useFileActions = () => {
         ...fileInfo
       };
 
-      const res = await api.post("/files/finalize", payload);
+      const res:any = await api.post("/files/finalize", payload);
       if(res.success){
       setFiles([res.data, ...files]);
       setDialogOpen(false);
@@ -52,8 +52,8 @@ export const useFileActions = () => {
       clearFileInfo();
       toast.success("File saved!");
       }
-    } catch (error) {
-      toast.error("Failed to save details");
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to save details");
     }
   };  
 

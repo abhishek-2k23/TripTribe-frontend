@@ -9,27 +9,18 @@ type UserProfile = {
   imageUrl: string
 }
 
-interface Member {
-  user: UserProfile // Strictly an object as per your JSON
-  role: string
-  joinedAt: string
-}
-
 export interface TripCardProps {
-  _id: string
-  name: string
-  description?: string
-  location: string
-  startDate: string
-  endDate: string
-  inviteCode: string
-  members: Member[]
-  createdBy: UserProfile
-  createdAt: string
-  updatedAt: string
-  image?: { url: string }
-  activityCount: number
-  budgetTotal: number
+  _id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  image?: { url: string };
+  members: TripMember[];
+  description?: string;
+  activityCount?: number;
+  budgetTotal?: number;
+  // Remove or make createdBy optional if not used in the UI
+  createdBy?: any; 
 }
 export interface TripMember {
   user: UserProfile; // The User ID

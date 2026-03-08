@@ -1,4 +1,4 @@
-import type { ItineraryState } from "@/types/itinerary.types"
+import type { ItineraryState, GetItineraryResponse } from "@/types/itinerary.types"
 import { create } from "zustand"
 
 export const useItineraryStore = create<ItineraryState>((set, get) => ({
@@ -92,12 +92,15 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
   setLocation: (v) => set({ location: v }),
   setType: (v) => set({ type: v }),
   setNotes: (v) => set({ notes: v }),
-  setAttachment: (v) => set({ attachment: v }),
 
-  addActivity: (activities) => {
-    set({ activities: activities })
-    get().resetForm()
-  },
+  addActivity: (response: GetItineraryResponse) => {
+  const allActivities = response.data.flatMap(day => 
+    day.sections.flatMap(sec => sec.activities)
+  );
+
+  set({ activities: allActivities });
+  get().resetForm();
+},
 
   resetForm: () =>
     set({
@@ -109,6 +112,5 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
       location: "",
       type: "",
       notes: "",
-      attachment: null,
     }),
 }))

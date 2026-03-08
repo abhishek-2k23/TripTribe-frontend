@@ -8,12 +8,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import useTripSettingsStore from "@/store/useSettingStore"
-import { DeleteMemberConfirm } from "./DeleteMembelConfirmation"
-import { useTripSettings } from "@/hooks/useSetting"
 
 export default function CollaborationCard() {
-  const { members, updateMemberRole, isDeletingMember } = useTripSettingsStore()
-  const { handleDeleteMember } = useTripSettings()
+  const { members, updateMemberRole } = useTripSettingsStore()
 
   return (
     <Card className="p-6 space-y-4">

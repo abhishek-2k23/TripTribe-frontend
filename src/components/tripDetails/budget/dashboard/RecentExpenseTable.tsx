@@ -39,7 +39,7 @@ export function RecentExpensesTable() {
       <Table className="min-w-[70%]">
         <TableHeader className="bg-slate-50/50 ">
           <TableRow className="hover:bg-transparent">
-            <TableHead className="w-[250px] uppercase text-[10px] font-bold tracking-wider text-slate-400 pl-8">Expense</TableHead>
+            <TableHead className="w-62.5 uppercase text-[10px] font-bold tracking-wider text-slate-400 pl-8">Expense</TableHead>
             <TableHead className="uppercase text-[10px] font-bold tracking-wider text-slate-400">Category</TableHead>
             <TableHead className="uppercase text-[10px] font-bold tracking-wider text-slate-400">Date</TableHead>
             <TableHead className="uppercase text-[10px] font-bold tracking-wider text-slate-400">Paid By</TableHead>
@@ -57,7 +57,7 @@ export function RecentExpensesTable() {
                     {/* You can map actual icons here based on category */}
                     <span className="text-lg">🏨</span>
                   </div>
-                  <span className="font-bold text-slate-700 block max-w-[150px] truncate">
+                  <span className="font-bold text-slate-700 block max-w-37.5 truncate">
                     {exp.title}
                   </span>
                 </div>

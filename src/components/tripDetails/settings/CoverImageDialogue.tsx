@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UploadCloud, ImageIcon, Loader2, X } from "lucide-react";
+import { UploadCloud, ImageIcon, Loader2} from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useApi } from "@/services/api";
 
 interface CoverImageDialogProps {
   currentCover?: string;
@@ -14,6 +15,7 @@ export function CoverImageDialog({ currentCover, onUpdate }: CoverImageDialogPro
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const api = useApi();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,8 +46,8 @@ export function CoverImageDialog({ currentCover, onUpdate }: CoverImageDialogPro
       toast.success("Cover updated!", { id: toastId });
       setIsOpen(false);
       setSelectedFile(null);
-    } catch (error) {
-      toast.error("Failed to update cover", { id: toastId });
+    } catch (error:any) {
+      toast.error(error?.message|| "Failed to update cover", { id: toastId });
     } finally {
       setIsUploading(false);
     }

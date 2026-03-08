@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { CalendarDays, MapPin, Settings } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import useAuthStore from '@/store/useAuthStore';
 import type { Trip } from "@/types/trip.types";

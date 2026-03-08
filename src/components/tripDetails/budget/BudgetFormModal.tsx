@@ -57,8 +57,8 @@ export function BudgetFormModal() {
                   id={cat}
                   type="number"
                   min="0"
-                  value={(budgetForm.categories as any)[cat]}
-                  onChange={(e) => setCategoryBudget(cat, Number(e.target.value))}
+                  value={budgetForm.categories[cat as keyof typeof budgetForm.categories]}
+                  onChange={(e) => setCategoryBudget(cat as keyof typeof budgetForm.categories, Number(e.target.value))}
                   className="rounded-xl"
                 />
               </div>
