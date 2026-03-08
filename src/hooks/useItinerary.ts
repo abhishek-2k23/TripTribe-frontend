@@ -45,6 +45,8 @@ export const useItinerary = () => {
       }
       const res = await api.post("/itinerary/addActivity", formData)
       if (res.success) {
+        console.log(res)
+        fetchItineraries()
         closeModal()
       }
     } catch (e) {
