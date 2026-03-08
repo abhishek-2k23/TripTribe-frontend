@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
 import { ListChecks, Wallet, Folder, Compass, Map } from "lucide-react";
 
@@ -11,12 +11,13 @@ const navItems = [
 
 export default function Sidebar() {
   const location = useLocation()
+  const navigate = useNavigate();
   return (
     <aside className="w-64 h-screen bg-foreground text-white flex flex-col justify-between p-4 ">
 
       {/* TOP SECTION */}
       <div>
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3 mb-5 cursor-pointer" onClick={() => navigate("/home")}>
           <Compass className="h-6 w-6 text-white" />
           <span className="text-lg font-bold text-white">Trip Tribe</span>
         </div>

@@ -29,7 +29,7 @@ export default function Checklist() {
   if (isLoading) return <ChecklistSkeleton />
 
   return (
-    <div className="p-8 w-full">
+    <div className="px-8 w-full">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-navy">Trip Checklists</h1>
         <Button
@@ -72,7 +72,7 @@ export default function Checklist() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Progress: {myCompletedCount} / {totalItems}
                 </p>
-                <Progress value={progress} className="h-2 mb-6" />
+                <Progress value={progress} className="h-2 mb-6 bg-slate-300" />
 
                 <div className="space-y-4">
                   {items.map((item) => {

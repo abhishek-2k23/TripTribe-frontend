@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 import { useTripSettings } from "@/hooks/useSetting"
 import GeneralInfoCard from "../settings/GeneralInfoCard"
 import CollaborationCard from "../settings/CollaborationCard"
-import InviteMemberCard from "../settings/InviteMemberCard"
-import DangerZoneCard from "../settings/DangerZoneCard"
 import useTripDetailsStore from "@/store/useTripDetails"
 import useMyTripStore from "@/store/useMyTrip"
 import useTripSettingsStore from "@/store/useSettingStore"
@@ -59,10 +57,6 @@ export default function SettingsPage(){
       <GeneralInfoCard />
 
       <CollaborationCard />
-
-      <InviteMemberCard />
-
-      <DangerZoneCard />
 
       <div className="flex justify-end gap-4">
 

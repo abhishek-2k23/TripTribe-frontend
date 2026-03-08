@@ -8,6 +8,7 @@ import toast from "react-hot-toast"
 import useTripDetailsStore from "@/store/useTripDetails"
 import { RefreshCwIcon } from "lucide-react"
 import { SettlementSkeleton } from "@/components/shimmerUI/SettlementSkelton"
+import TravelerBalancesCard from "../budget/TravelerBalancesCard"
 
 export default function Budget() {
   const setLoading = useBudgetStore((s) => s.setLoading)
@@ -44,7 +45,7 @@ export default function Budget() {
     return <SettlementSkeleton />
   }
   return (
-    <div className="px-6 space-y-6">
+    <div className="px-8 lg:px-15 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -66,10 +67,12 @@ export default function Budget() {
 
       <BudgetSummaryCards />
 
-      <div className="grid grid-cols-1 gap-6">
-        <div className="col-span-2">
+      <div className="flex gap-8">
+        <div className="w-3/4">
           <WhoOwesWhoList />
         </div>
+        
+        <div className="w-1/4"><TravelerBalancesCard /></div>
       </div>
     </div>
   )

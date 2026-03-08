@@ -33,7 +33,7 @@ export default function TravelerBalancesCard() {
                   b.balance < 0 ? "text-red-500" : "text-green-500"
                 }`}
               >
-                ${b.balance.toFixed(2)}
+                ₹{b.balance.toFixed(2)}
               </p>
             </div>
           ))

@@ -60,7 +60,7 @@ export default function File() {
     activeTab === "All" ? files : files.filter((f) => f.category === activeTab)
 
   return (
-    <div className="p-8 w-full space-y-8">
+    <div className="px-8 w-full space-y-8">
       {/* Header Section */}
       <div className="flex justify-between items-center">
         <div>
@@ -170,6 +170,7 @@ export default function File() {
           <img
             src="https://res.cloudinary.com/daamrpzus/image/upload/v1772931257/TripTribe/ChatGPT_Image_Mar_8__2026__06_23_08_AM-removebg-preview_o1svii.png"
             alt="no docs"
+            className="w-56 h-56"
           />{" "}
           <p className="text-navy text-2xl font-semibold">
             No documents or files found
@@ -177,7 +178,7 @@ export default function File() {
         </div>
       )}
       {/* Files Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-5">
         {filteredFiles.map((file) => (
           <FileCard key={file._id} file={file} />
         ))}
