@@ -48,7 +48,7 @@ Planning trips with a group often involves fragmented spreadsheets and messy cha
 ### Itinerary View
 ![Itinerary](./src/assets/SS/Itinerary.png)
 ### checklists View
-![Itinerary](./src/assets/SS/checklist.png)
+![Itinerary](./src/assets/SS/Checklist.png)
 ### BudgetDashboard View
 ![Itinerary](./src/assets/SS/BudgetDashboard.png)
 ### Debt settlement View
@@ -85,14 +85,14 @@ Planning trips with a group often involves fragmented spreadsheets and messy cha
 
 ### Installation
 
-1. **Clone the repository**
+1. **Clone the this(frontend) repository**
    ```bash
-   git clone [https://github.com/abhishek-2k23/TripTribe-frontend](https://github.com/abhishek-2k23/TripTribe-frontend)
+   git clone https://github.com/abhishek-2k23/TripTribe-frontend
    cd triptribe-frontend
    npm install
 
 2. **Clone the backend repository**
    ```bash
-   git clone [https://github.com/abhishek-2k23/TripTribe-backend](https://github.com/abhishek-2k23/TripTribe-backend)
+   git clone https://github.com/abhishek-2k23/TripTribe-backend
    cd triptribe-backend
    npm install
