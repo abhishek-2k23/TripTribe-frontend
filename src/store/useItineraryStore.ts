@@ -4,7 +4,7 @@ import { create } from "zustand"
 export const useItineraryStore = create<ItineraryState>((set, get) => ({
 
   isAddActivityOpen: false,
-
+  loading: false,
   sectionTitle: "",
   customSection: "",
   sectionDate: null,
@@ -19,6 +19,7 @@ export const useItineraryStore = create<ItineraryState>((set, get) => ({
   timeline: [],
 
   openModal: () => set({ isAddActivityOpen: true }),
+  setLoading: (v) => set({loading: v}),
 
   closeModal: () => {
     set({ isAddActivityOpen: false })

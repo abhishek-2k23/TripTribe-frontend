@@ -10,7 +10,7 @@ export default function DayCard({ day, index }: Props) {
   const date = new Date(day.date);
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-3">
 
       {/* DAY NUMBER */}
       <div className="flex flex-col items-center">

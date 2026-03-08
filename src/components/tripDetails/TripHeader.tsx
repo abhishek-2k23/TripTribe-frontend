@@ -105,11 +105,6 @@ export default function TripHeader({name, startDate, endDate, description, membe
           <InviteButton inviteCode={inviteCode}/>
         )}
 
-        {/* Settings Button */}
-        <Button variant="ghost" size="icon">
-          <Settings size={18} />
-        </Button>
-
       </div>
     </div>
   );

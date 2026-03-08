@@ -24,11 +24,13 @@ interface ChecklistState {
   isLoading: boolean;
 
   setChecklist: (v: Category[]) => void
+  setLoading: (v: boolean) => void
 }
 
 export const useChecklistStore = create<ChecklistState>((set) => ({
   checklists: [],
   isLoading: false,
 
-  setChecklist: (data) => set({checklists: data})
+  setChecklist: (data) => set({checklists: data}),
+  setLoading: (v) => set({isLoading: v})
 }));

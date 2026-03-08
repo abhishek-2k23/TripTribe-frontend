@@ -13,7 +13,7 @@ export default function AddActivityButton() {
       <Button
         onClick={openModel}
         variant="heroOutline"
-        className="w-full mb-5 rounded-md hover:bg-navy-foreground"
+        className="w-full mb-2 rounded-md hover:bg-navy-foreground"
       >
         <Plus size={16} />
         Add Activity

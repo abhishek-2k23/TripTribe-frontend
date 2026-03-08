@@ -61,9 +61,6 @@ export default function AddActivityModal() {
   const {createActivity} = useItinerary();
 
   const sectionOptions = [
-    "Arrival at Gion District",
-    "Golden Pavilion Visit",
-    "Shopping in Kyoto Mall",
   ];
 
   const activityTypes = [
@@ -104,7 +101,7 @@ export default function AddActivityModal() {
 
               <SelectContent className="bg-card border shadow-md">
 
-                {sectionOptions.map((item) => (
+                {sectionOptions?.map((item) => (
                   <SelectItem key={item} value={item}>
                     {item}
                   </SelectItem>
@@ -151,7 +148,7 @@ export default function AddActivityModal() {
 
               <PopoverContent className="w-auto p-0">
                 <Calendar
-                  mode="single"
+                  mode="range"
                   selected={sectionDate ?? undefined}
                   onSelect={(date) => setSectionDate(date ?? null)}
                   className="bg-accent"
@@ -225,14 +222,6 @@ export default function AddActivityModal() {
             placeholder="Notes (optional)"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-          />
-
-          {/* FILE */}
-          <Input
-            type="file"
-            onChange={(e) =>
-              setAttachment(e.target.files?.[0] ?? null)
-            }
           />
 
         </div>

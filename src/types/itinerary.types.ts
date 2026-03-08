@@ -59,6 +59,7 @@ export interface ItineraryState {
   type: string
   notes: string
   attachment: File | null
+  loading: boolean,
 
   // data
   activities: Activity[]
@@ -66,6 +67,7 @@ export interface ItineraryState {
   // modal actions
   openModal: () => void
   closeModal: () => void
+  setLoading: (v: boolean) => void
 
   // form setters
   setSectionTitle: (v: string) => void
