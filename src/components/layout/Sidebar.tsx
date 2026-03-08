@@ -1,9 +1,9 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
-import { LayoutDashboard, ListChecks, Wallet, Folder, Compass } from "lucide-react";
+import { ListChecks, Wallet, Folder, Compass, Map } from "lucide-react";
 
 const navItems = [
-  { name: "My Trips", path: "/home/my-trips", icon: LayoutDashboard },
+  { name: "My Trips", path: "/home/my-trips", icon: Map },
   { name: "Checklists", path: "/home/checklists", icon: ListChecks },
   { name: "Budget", path: "/home/budget", icon: Wallet },
   { name: "Files", path: "/home/files", icon: Folder },

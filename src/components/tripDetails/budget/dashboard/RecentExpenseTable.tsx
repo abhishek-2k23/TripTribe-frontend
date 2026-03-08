@@ -22,20 +22,20 @@ export function RecentExpensesTable() {
   };
 
   return (
-    <div className="bg-card rounded-3xl border shadow-sm overflow-hidden min-w-[70%]">
+    <div className="bg-card rounded-3xl border shadow-sm overflow-hidden min-w-[70%] mb-10">
       <div className="p-6 flex justify-between items-center border-b border-slate-50">
         <h2 className="text-xl font-bold text-slate-800">Recent Expenses</h2>
       </div>
-      {expenses.length === 0 && <div className="mx-auto w-full  flex flex-col items-center justify-center">
+      {expenses.length === 0 ? <div className="mx-auto w-full  flex flex-col items-center justify-center">
           {" "}
           <img
             src="https://res.cloudinary.com/daamrpzus/image/upload/v1772927233/TripTribe/ChatGPT_Image_Mar_8__2026__05_14_22_AM-removebg-preview_gtthaf.png"
             alt="no deb"
           />{" "}
-          <p className="text-navy text-2xl font-semibold">
+          <p className="text-navy text-2xl font-semibold -mt-20 mb-3">
             No recent spending
           </p>
-        </div> }
+        </div> :
       <Table className="min-w-[70%]">
         <TableHeader className="bg-slate-50/50 ">
           <TableRow className="hover:bg-transparent">
@@ -107,7 +107,7 @@ export function RecentExpensesTable() {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table>}
     </div>
   );
 }

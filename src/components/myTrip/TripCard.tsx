@@ -43,7 +43,7 @@ export default function TripCard({
         <img
           src={image?.url}
           alt={name}
-          className="w-full h-full object-cover"
+          className="max-w-64 h-full object-cover"
         />
 
         <Badge
