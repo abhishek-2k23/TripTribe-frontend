@@ -32,12 +32,6 @@ const useWebSocketEmmits = () => {
       socket.emit("join_trip", tripId)
     })
 
-    socket.on("member_joined", (populatedTrip) => {
-      addTrip(populatedTrip)
-
-      toast.success(`New member joined the trip!`)
-    })
-
     socket.on("expense_added", (newExpense) => {
       console.log(newExpense)
       // addRecentExpense(newExpense);

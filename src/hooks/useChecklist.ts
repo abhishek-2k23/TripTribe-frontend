@@ -87,7 +87,7 @@ const useChecklist = () => {
 
   try {
     const res: any = await api.post(
-      `/checklist/${selectedTripId}/checklist/${categoryId}/items/${itemId}/toggle`,
+      `/checklist/${selectedTripId}/checklist/${categoryId}/items/${itemId}`,
       { isChecked }
     );
 
