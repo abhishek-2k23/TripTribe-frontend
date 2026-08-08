@@ -42,6 +42,7 @@ const useChecklist = () => {
     try {
       const res:any = await api.get(`/checklist/fetchLists/${selectedTripId}`)
       if (res.success) {
+        console.log(res);
         setChecklist(res.data.categories)
       }
     } catch (e: any) {

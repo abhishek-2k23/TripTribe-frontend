@@ -32,9 +32,11 @@ const useWebSocketEmmits = () => {
       socket.emit("join_trip", tripId)
     })
 
-    socket.on("expense_added", (newExpense) => {
-      console.log(newExpense)
-      // addRecentExpense(newExpense);
+    
+
+    socket.on("member_joined", (populatedTrip) => {
+      addTrip(populatedTrip)
+
     })
 
     socket.on("activity_added", (dayPlan) => {
