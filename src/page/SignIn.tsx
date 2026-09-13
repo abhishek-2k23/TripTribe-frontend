@@ -3,6 +3,7 @@ import { useSignIn } from '@clerk/clerk-react';
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-adventure.jpg";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const { isLoaded, signIn } = useSignIn();
@@ -51,9 +52,9 @@ const SignIn = () => {
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
             By continuing, you agree to Trip Tribe's{" "}
-            <a href="#" className="text-primary hover:underline">Terms of Service</a>{" "}
+            <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>{" "}
             and{" "}
-            <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+            <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 // import { Compass } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // const columns = [
 //   { title: "Product", links: ["Features", "Integrations", "Pricing", "Changelog"] },
@@ -39,6 +40,11 @@ const Footer = () => {
         </div> */}
 
         <div className=" border-t border-border pt-8 text-center text-xs text-muted-foreground">
+          <nav className="mb-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
+            <Link to="/delete-account" className="hover:text-foreground">Delete account</Link>
+          </nav>
           © 2026 Trip Tribe. All rights reserved.
         </div>
       </div>

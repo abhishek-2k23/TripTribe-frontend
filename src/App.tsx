@@ -9,6 +9,9 @@ import Budget from "./page/Budget";
 import FilesPage from "./page/Files"; 
 import { Toaster } from "react-hot-toast";
 import TripDetails from "./page/TripDetails";
+import LegalPage from "./page/LegalPage";
+import DeleteAccount from "./page/DeleteAccount";
+import { PRIVACY_POLICY, TERMS_OF_SERVICE } from "./content/legal";
 
 function App() {
   return (
@@ -21,6 +24,11 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<Navigate to="/signin" />} />
         <Route path="/sso-callback" element={<SSOCallback />} />
+
+        {/* Public legal pages — store listings link here, so no sign-in required */}
+        <Route path="/privacy" element={<LegalPage document={PRIVACY_POLICY} />} />
+        <Route path="/terms" element={<LegalPage document={TERMS_OF_SERVICE} />} />
+        <Route path="/delete-account" element={<DeleteAccount />} />
 
         {/* Protected Dashboard Layout */}
         <Route path="/home" element={<ProtectedLayout />}>
