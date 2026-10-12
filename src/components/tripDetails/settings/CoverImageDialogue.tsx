@@ -37,7 +37,8 @@ export function CoverImageDialog({ currentCover, onUpdate }: CoverImageDialogPro
       formData.append("file", selectedFile);
       
       // Assuming 'api' is your useApi hook instance
-      const res: any = await api.post("/files/upload-raw", formData);
+      // `scope=public`: a cover image is stored on the trip and read for its lifetime.
+      const res: any = await api.post("/files/upload-raw?scope=public", formData);
       const newCloudinaryUrl = res.data.url;
 
       // 2. Call the update function passed from Settings page

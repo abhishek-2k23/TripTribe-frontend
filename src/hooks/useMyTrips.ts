@@ -22,7 +22,9 @@ const useMyTrips = () => {
 
         try {
           // Using your existing upload-raw route
-          const uploadRes: any = await api.post("/files/upload-raw", formData)
+          // `scope=public` keeps the cover on a permanent URL; without it the upload is stored as an
+          // authenticated asset whose URL expires, and `trip.image.url` would go dead in minutes.
+          const uploadRes: any = await api.post("/files/upload-raw?scope=public", formData)
           console.log("cover image upload: ", uploadRes)
           imageUrl.url = uploadRes.data.url
           imageUrl.public_id = uploadRes.data.publid_id

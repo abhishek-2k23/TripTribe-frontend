@@ -28,7 +28,8 @@ export const useTripSettings = () => {
       formData.append("file", file); // Must match your upload.single("file") backend key
 
       // 2. Upload to Cloudinary via your existing route
-      const res: any = await api.post("/files/upload-raw", formData);
+      // `scope=public`: a cover image is stored on the trip and read for its lifetime.
+      const res: any = await api.post("/files/upload-raw?scope=public", formData);
       
 
       setCoverImage({ url: res.data.url, public_id: res.data.public_id });
